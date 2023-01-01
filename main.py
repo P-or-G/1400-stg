@@ -4,7 +4,7 @@ from settings import *
 
 class Board:
     # создание поля
-    def __init__(self, width, height):
+    def __init__(self, width, height, se):
         self.width = width
         self.height = height
         self.board = [[0] * width for _ in range(height)]
