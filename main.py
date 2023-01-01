@@ -34,7 +34,7 @@ if __name__ == '__main__':
     pygame.init()
     screen = pygame.display.set_mode(SIZE)
 
-    board = Board(150, 60, CELL_SIDE)
+    board = Board(CELL_HOR_NUM, CELL_VERT_NUM, CELL_SIDE)
     running = True
     while running:
         for event in pygame.event.get():
