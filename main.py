@@ -4,14 +4,14 @@ from settings import *
 
 class Board:
     # создание поля
-    def __init__(self, width, height, se):
+    def __init__(self, width, height, size):
         self.width = width
         self.height = height
         self.board = [[0] * width for _ in range(height)]
         # значения по умолчанию
-        self.left = 10
-        self.top = 10
-        self.cell_size = 30
+        self.left = 0
+        self.top = 0
+        self.cell_size = size
 
     # настройка внешнего вида
     def set_view(self, left, top, cell_size):
@@ -34,10 +34,14 @@ if __name__ == '__main__':
     pygame.init()
     screen = pygame.display.set_mode(SIZE)
 
-    board = Board(150, 60)
+    board = Board(150, 60, CELL_SIDE)
     running = True
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-        screen.fill((0, 0, 0))
+        screen.fill(pygame.Color('black'))
+        board.render(screen)
+        pygame.display.flip()
+
+    pygame.quit()
