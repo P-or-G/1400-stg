@@ -31,17 +31,20 @@ class Board:
 
 
 if __name__ == '__main__':
-    pygame.init()
-    screen = pygame.display.set_mode(SIZE)
-
     board = Board(CELL_HOR_NUM, CELL_VERT_NUM, CELL_SIDE)
+    all_sprites = board.render()
+
     running = True
+
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+
         screen.fill(pygame.Color('black'))
-        board.render(screen)
+
+        all_sprites.draw(screen)
+
         pygame.display.flip()
 
     pygame.quit()
