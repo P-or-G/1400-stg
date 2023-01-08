@@ -9,7 +9,7 @@ screen = pygame.display.set_mode(SIZE)
 board = Board(CELL_HOR_NUM, CELL_VERT_NUM, CELL_SIDE)
 
 all_sprites = board.render()
-mh = MainHall(all_sprites, hall_crds[0], hall_crds[1])
+mh = MainHall(all_sprites, board)
 
 clock = pygame.time.Clock()
 

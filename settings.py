@@ -11,14 +11,15 @@ CELL_HOR_NUM = WIDTH // CELL_SIDE
 FPS = 60
 
 # - Sprites options
-ass_cell_y_crds = ['grass_1.png', 'grass_2.png', 'grass_3.png', 'grass_4.png']
-hall_crds = random.randrange(0, WIDTH, 16), random.randrange(0, HEIGHT, 16)
+ass_cell_y_crds = ['grass_1.png', 'grass_2.png', 'grass_3.png', 'grass_4.png', 'rock.png', 'iron.png']
+safe_types = ['grass_1.png', 'grass_2.png', 'grass_3.png', 'grass_4.png']
 
 # - Gameplay options
 start_money = 100
 start_wood = 50
 start_stone = 25
 start_iron = 10
+
 
 # - Useful functions
 def load_image(name, colorkey=None):
@@ -35,4 +36,3 @@ def load_image(name, colorkey=None):
     else:
         image = image.convert_alpha()
     return image
-
