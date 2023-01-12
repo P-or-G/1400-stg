@@ -10,6 +10,7 @@ board = Board(CELL_HOR_NUM, CELL_VERT_NUM, CELL_SIDE)
 
 all_sprites = board.render()
 mh = MainHall(all_sprites, board)
+mill = Mill(all_sprites, board)
 
 clock = pygame.time.Clock()
 
@@ -21,6 +22,11 @@ while running:
     if mh.tick % 60 == 0:
         m_x, m_y = pygame.mouse.get_pos()
         mh.select(m_x, m_y)
+     
+    if mill.tick % 60 == 0:
+        mill_x, mill_y = pygame.mouse.get_pos()
+        mh.select(mill_x, mill_y)
+
 
     clock.tick(60)
     screen.fill(pygame.Color('black'))
