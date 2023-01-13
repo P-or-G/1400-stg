@@ -19,6 +19,7 @@ class MainHall(pygame.sprite.Sprite):
             y = self.rect.y
             x1 = x + 16
             y1 = y + 16
+            print()
             if board.get_cell(x, y).im in safe_types and board.get_cell(x1, y).im in safe_types \
                and board.get_cell(x, y1).im in safe_types and board.get_cell(x1, y1).im in safe_types:
                 break
@@ -45,15 +46,7 @@ class Mill(pygame.sprite.Sprite):
         self.wheat = 0
         # ----------------------------------------------------------------------------------------------------------------------
 
-        while True:
-            self.rect.x, self.rect.y = random.randrange(0, WIDTH, 16), random.randrange(0, HEIGHT, 16)
-            x = self.rect.x
-            y = self.rect.y
-            x1 = x + 16
-            y1 = y + 16
-            if board.get_cell(x, y).im in safe_types and board.get_cell(x1, y).im in safe_types \
-               and board.get_cell(x, y1).im in safe_types and board.get_cell(x1, y1).im in safe_types:
-                break
+        self.rect.x, self.rect.y = random.randrange(0, WIDTH, 16), random.randrange(0, HEIGHT, 16)
 
     def select(self, x, y):
         if self.rect.x <= x <= self.rect.x + 32 and self.rect.y <= y <= self.rect.y + 32:
@@ -71,7 +64,7 @@ class Mill(pygame.sprite.Sprite):
             self.image = load_image('mill_3.png')
         elif self.tick % 50 == 38:
             self.image = load_image('mill_4.png')
-          
+
     class Sawmill(pygame.sprite.Sprite):
         def __init__(self, group, board):
             super().__init__(group)
