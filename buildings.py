@@ -219,3 +219,12 @@ class Mill(pygame.sprite.Sprite):
 
         def update(self, *args, **kwargs):
             self.tick += 1
+            
+        class Berater(pygame.sprite.Sprite):
+            def __init__(self, group, board):
+                super().__init__(group)
+                self.image = load_image('berater.png')
+                self.rect = self.image.get_rect()
+                self.board = board
+                self.tick = 0
+                self.flag = True
