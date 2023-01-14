@@ -3,9 +3,10 @@ from settings import *
 from cells import Board
 from buildings import *
 import os
-
+from resources import BREAD, WOOD, STONE, IRON, MONEY, WHEAT, IRON_ORE, GOLD_ORE
 
 pygame.init()
+
 
 os.environ['SDL_VIDEO_WINDOW_POS'] = "448,0"
 screen = pygame.display.set_mode(TRUE_SIZE, pygame.NOFRAME)
@@ -50,5 +51,6 @@ while running:
     buildings.update()
 
     pygame.display.flip()
+    print(WHEAT.get_value())
 
 pygame.quit()

@@ -21,7 +21,7 @@ start_money = 100
 start_wood = 50
 start_stone = 25
 start_iron = 10
-
+start_bread = 100
 
 # - Useful functions
 def load_image(name, colorkey=None):
