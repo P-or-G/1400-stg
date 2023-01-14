@@ -12,9 +12,13 @@ CELL_HOR_NUM = WIDTH // CELL_SIDE
 FPS = 60
 
 # - Sprites options
-ass_cell_y_crds = ['grass_1.png', 'grass_2.png', 'grass_3.png', 'grass_4.png', 'rock.png', 'rock_2.png', 'rock_3.png',
+ass_cell_y_crds = ['grass_1.png', 'grass_2.png', 'grass_3.png', 'grass_4.png', 'rock_1.png', 'rock_2.png', 'rock_3.png',
                                                                                                          'iron.png']
 safe_types = ['grass_1.png', 'grass_2.png', 'grass_3.png', 'grass_4.png']
+
+sawmill_types = ['sawmill_1.png', 'sawmill_2.png']
+
+rock_types = ['rock_1.png', 'rock_2.png', 'rock_3.png']
 
 fertile_soils = ['f_s1.png', 'f_s2.png']
 

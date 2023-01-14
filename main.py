@@ -40,16 +40,22 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.MOUSEBUTTONUP:
+
             x, y = pygame.mouse.get_pos()
+
             if fl_btn_select == 0:
+
                 for btn in interface:
                     if btn.select(x, y):
+
                         x_tr = btn.rect.x
                         y_tr = btn.rect.y
                         im_tr = btn.type
                         tr_btn = btn
                         fl_btn_select = 1
+
             elif fl_btn_select == 1:
+
                 fl_btn_select = 0
                 Mill(buildings, board, pygame.mouse.get_pos()[0] // 16 * 16, pygame.mouse.get_pos()[1] // 16 * 16)
                 tr_btn.kill()
