@@ -4,7 +4,7 @@ import pygame
 import random
 
 # - Window options
-TRUE_SIZE = T_W, T_H = 1920 - 448, 1280
+TRUE_SIZE = T_W, T_H = 1920, 1024
 SIZE = WIDTH, HEIGHT = 1024, 1024
 CELL_SIDE = 16
 CELL_VERT_NUM = HEIGHT // CELL_SIDE
@@ -16,12 +16,15 @@ ass_cell_y_crds = ['grass_1.png', 'grass_2.png', 'grass_3.png', 'grass_4.png', '
                                                                                                          'iron.png']
 safe_types = ['grass_1.png', 'grass_2.png', 'grass_3.png', 'grass_4.png']
 
+fertile_soils = ['f_s1.png', 'f_s2.png']
+
 # - Gameplay options
 start_money = 100
 start_wood = 50
 start_stone = 25
 start_iron = 10
 start_bread = 100
+
 
 # - Useful functions
 def load_image(name, colorkey=None):

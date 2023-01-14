@@ -1,5 +1,6 @@
 import pygame
 from buildings import *
+from settings import *
 
 
 class Cell(pygame.sprite.Sprite):
@@ -18,6 +19,8 @@ class Cell(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
+        self.x = x
+        self.y = y
 
     def update(self, *args, **kwargs):
         pass
@@ -31,11 +34,11 @@ class Board:
     def __init__(self, width, height, size):
         self.width = width
         self.height = height
-        self.board = [[0] * width for _ in range(height)]
         # значения по умолчанию
         self.left = 0
-        self.top = 16
+        self.top = 0
         self.cell_size = size
+        self.a_spr = pygame.sprite.Group()
 
     # настройка внешнего вида
     def set_view(self, left, top, cell_size):
@@ -44,8 +47,6 @@ class Board:
         self.cell_size = cell_size
 
     def render(self):
-        self.a_spr = pygame.sprite.Group()
-
         for cell_y in range(self.height):
             for cell_x in range(self.width):
                 x = self.left + self.cell_size * cell_x
@@ -54,9 +55,9 @@ class Board:
         return self.a_spr
 
     def get_cell(self, x, y):
-        cell_x = x // 16 * 16
-        cell_y = y // 16 * 16
-        cou = 0
+        cell_x = (x // 16) * 16
+        cell_y = (y // 16) * 16
         for i in self.a_spr:
             if i.rect.y == cell_y and i.rect.x == cell_x:
                 return i
+
