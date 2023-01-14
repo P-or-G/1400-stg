@@ -44,17 +44,26 @@ class Mill(pygame.sprite.Sprite):
         self.board = board
         self.tick = 0
         self.flag = True
+        while True:
+            self.rect.x, self.rect.y = random.randrange(16, WIDTH, 16), random.randrange(16, HEIGHT, 16)
+            x = self.rect.x
+            y = self.rect.y
+            try:
+                if board.get_cell(x, y).im in safe_types:
+                    break
+            except:
+                pass
 
         # ----------------------------------------------------------------------------------------------------------------------
         #   ПЕРЕМЕННАЯ ВРЕМЕННА И ПОДЛЕЖИТ РАСТРЕЛУ!!!
         self.wheat = 0
         # ----------------------------------------------------------------------------------------------------------------------
 
-        self.rect.x, self.rect.y = random.randrange(448, WIDTH + 448 - 16, 16), random.randrange(16, HEIGHT + 16 - 16, 16)
-
-    def select(self, x, y):
-        if self.rect.x <= x <= self.rect.x + 32 and self.rect.y <= y <= self.rect.y + 32:
-            print('WIP')
+#        self.rect.x, self.rect.y = random.randrange(448, WIDTH + 448 - 16, 16), random.randrange(16, HEIGHT + 16 - 16, 16)
+#
+#    def select(self, x, y):
+#        if self.rect.x <= x <= self.rect.x + 32 and self.rect.y <= y <= self.rect.y + 32:
+#            print('WIP')
 
     def update(self, *args, **kwargs):
         self.tick += 1
