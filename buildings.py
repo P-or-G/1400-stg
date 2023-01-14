@@ -1,6 +1,7 @@
 from settings import *
 import pygame
-import PyQt6
+from cells import *
+from PyQt import *
 
 
 class MainHall(pygame.sprite.Sprite):
@@ -14,19 +15,22 @@ class MainHall(pygame.sprite.Sprite):
         self.tick = 0
         self.flag = True
         while True:
-            self.rect.x, self.rect.y = random.randrange(0, WIDTH, 16), random.randrange(0, HEIGHT, 16)
+            self.rect.x, self.rect.y = random.randrange(0, WIDTH + 448, 16), random.randrange(16, HEIGHT + 16, 16)
             x = self.rect.x
             y = self.rect.y
             x1 = x + 16
             y1 = y + 16
-            print()
-            if board.get_cell(x, y).im in safe_types and board.get_cell(x1, y).im in safe_types \
-               and board.get_cell(x, y1).im in safe_types and board.get_cell(x1, y1).im in safe_types:
-                break
+            try:
+                if board.get_cell(x, y).get_im() in safe_types and board.get_cell(x1, y).get_im() in safe_types \
+                   and board.get_cell(x, y1).get_im() in safe_types and board.get_cell(x1, y1).get_im() in safe_types:
+                    break
+
+            except:
+                pass
 
     def select(self, x, y):
         if self.rect.x <= x <= self.rect.x + 32 and self.rect.y <= y <= self.rect.y + 32:
-            print('WIP')
+            print("WIP")
 
     def update(self, *args, **kwargs):
         self.tick += 1
@@ -46,7 +50,7 @@ class Mill(pygame.sprite.Sprite):
         self.wheat = 0
         # ----------------------------------------------------------------------------------------------------------------------
 
-        self.rect.x, self.rect.y = random.randrange(0, WIDTH, 16), random.randrange(0, HEIGHT, 16)
+        self.rect.x, self.rect.y = random.randrange(448, WIDTH + 448 - 16, 16), random.randrange(16, HEIGHT + 16 - 16, 16)
 
     def select(self, x, y):
         if self.rect.x <= x <= self.rect.x + 32 and self.rect.y <= y <= self.rect.y + 32:
@@ -80,7 +84,7 @@ class Mill(pygame.sprite.Sprite):
             # ----------------------------------------------------------------------------------------------------------------------
 
             while True:
-                self.rect.x, self.rect.y = random.randrange(0, WIDTH, 16), random.randrange(0, HEIGHT, 16)
+                self.rect.x, self.rect.y = random.randrange(448, WIDTH + 448, 16), random.randrange(16, HEIGHT + 16, 16)
                 x = self.rect.x
                 y = self.rect.y
                 x1 = x + 16

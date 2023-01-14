@@ -4,3 +4,4 @@ from settings import *
 from buildings import *
 
 
+class Button(pygame.sprite.Sprite):

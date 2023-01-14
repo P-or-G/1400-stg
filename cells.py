@@ -1,6 +1,4 @@
 import pygame
-from random import randint
-from settings import *
 from buildings import *
 
 
@@ -24,6 +22,9 @@ class Cell(pygame.sprite.Sprite):
     def update(self, *args, **kwargs):
         pass
 
+    def get_im(self):
+        return self.im
+
 
 class Board:
     # создание поля
@@ -33,7 +34,7 @@ class Board:
         self.board = [[0] * width for _ in range(height)]
         # значения по умолчанию
         self.left = 0
-        self.top = 0
+        self.top = 16
         self.cell_size = size
 
     # настройка внешнего вида
@@ -44,6 +45,7 @@ class Board:
 
     def render(self):
         self.a_spr = pygame.sprite.Group()
+
         for cell_y in range(self.height):
             for cell_x in range(self.width):
                 x = self.left + self.cell_size * cell_x
@@ -54,6 +56,7 @@ class Board:
     def get_cell(self, x, y):
         cell_x = x // 16 * 16
         cell_y = y // 16 * 16
+        cou = 0
         for i in self.a_spr:
             if i.rect.y == cell_y and i.rect.x == cell_x:
                 return i

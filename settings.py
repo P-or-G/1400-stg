@@ -4,7 +4,8 @@ import pygame
 import random
 
 # - Window options
-SIZE = WIDTH, HEIGHT = 512, 512
+TRUE_SIZE = T_W, T_H = 1920 - 448, 1280
+SIZE = WIDTH, HEIGHT = 1024, 1024
 CELL_SIDE = 16
 CELL_VERT_NUM = HEIGHT // CELL_SIDE
 CELL_HOR_NUM = WIDTH // CELL_SIDE
