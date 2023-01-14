@@ -19,6 +19,7 @@ all_sprites.update()
 
 buildings = pygame.sprite.Group()
 
+
 mh = MainHall(buildings, board)
 mill = Mill(buildings, board)
 

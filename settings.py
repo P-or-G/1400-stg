@@ -12,7 +12,8 @@ CELL_HOR_NUM = WIDTH // CELL_SIDE
 FPS = 60
 
 # - Sprites options
-ass_cell_y_crds = ['grass_1.png', 'grass_2.png', 'grass_3.png', 'grass_4.png', 'rock.png', 'iron.png']
+ass_cell_y_crds = ['grass_1.png', 'grass_2.png', 'grass_3.png', 'grass_4.png', 'rock.png', 'rock_2.png', 'rock_3.png',
+                                                                                                         'iron.png']
 safe_types = ['grass_1.png', 'grass_2.png', 'grass_3.png', 'grass_4.png']
 
 # - Gameplay options
