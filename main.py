@@ -1,50 +1,64 @@
 import pygame
 from settings import *
+from cells import Board
+from buildings import *
+import os
+from resources import BREAD, WOOD, STONE, IRON, MONEY, WHEAT, IRON_ORE, GOLD_ORE
+
+pygame.init()
 
 
-class Board:
-    # создание поля
-    def __init__(self, width, height, size):
-        self.width = width
-        self.height = height
-        self.board = [[0] * width for _ in range(height)]
-        # значения по умолчанию
-        self.left = 0
-        self.top = 0
-        self.cell_size = size
+os.environ['SDL_VIDEO_WINDOW_POS'] = "448,0"
+screen = pygame.display.set_mode(TRUE_SIZE, pygame.NOFRAME)
 
-    # настройка внешнего вида
-    def set_view(self, left, top, cell_size):
-        self.left = left
-        self.top = top
-        self.cell_size = cell_size
+board = Board(CELL_HOR_NUM, CELL_VERT_NUM, CELL_SIDE)
 
-    def render(self, screen):
-        for cell_y in range(self.height):
-            for cell_x in range(self.width):
-                x = self.left + self.cell_size * cell_x
-                y = self.top + self.cell_size * cell_y
-                if self.board[cell_y][cell_x]:
-                    pygame.draw.rect(screen, pygame.Color('white'), (x, y, self.cell_size, self.cell_size), width=0)
-                else:
-                    pygame.draw.rect(screen, pygame.Color('white'), (x, y, self.cell_size, self.cell_size), width=1)
+all_sprites = board.render()
 
+all_sprites.draw(screen)
+all_sprites.update()
 
-if __name__ == '__main__':
-    board = Board(CELL_HOR_NUM, CELL_VERT_NUM, CELL_SIDE)
-    all_sprites = board.render()
+buildings = pygame.sprite.Group()
 
-    running = True
+mh = MainHall(buildings, board)
+mill = Mill(buildings, board)
+sawmill = Sawmill(buildings, board)
+mine = MineRock(buildings, board)
 
-    while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
+clock = pygame.time.Clock()
 
-        screen.fill(pygame.Color('black'))
+fl_open = False
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
 
-        all_sprites.draw(screen)
+    if mh.tick % 60 == 0 and not fl_open:
+        m_x, m_y = pygame.mouse.get_pos()
+        mh.select(m_x, m_y)
 
-        pygame.display.flip()
+    if mine.tick % 60 == 0 and not fl_open:
+        mine_x, mine_y = pygame.mouse.get_pos()
+        mh.select(mine_x, mine_y)
 
-    pygame.quit()
+    if sawmill.tick % 60 == 0 and not fl_open:
+        sawmill_x, sawmill_y = pygame.mouse.get_pos()
+        mh.select(sawmill_x, sawmill_y)
+
+    if mill.tick % 60 == 0:
+        mill_x, mill_y = pygame.mouse.get_pos()
+        mh.select(mill_x, mill_y)
+
+    clock.tick(60)
+    screen.fill(pygame.Color('black'))
+
+    all_sprites.draw(screen)
+    all_sprites.update()
+
+    buildings.draw(screen)
+    buildings.update()
+
+    pygame.display.flip()
+
+pygame.quit()

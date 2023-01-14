@@ -54,11 +54,14 @@ class Mill(pygame.sprite.Sprite):
         self.tick = 0
         self.flag = True
         while True:
-            self.rect.x, self.rect.y = random.randrange(16, WIDTH, 16), random.randrange(16, HEIGHT, 16)
+            self.rect.x, self.rect.y = random.randrange(0, WIDTH, 16), random.randrange(0, HEIGHT, 16)
             x = self.rect.x
             y = self.rect.y
+            x1 = x + 16
+            y1 = y + 16
             try:
-                if board.get_cell(x, y).im in safe_types:
+                if board.get_cell(x, y).im in safe_types and board.get_cell(x1, y).im in safe_types \
+                        and board.get_cell(x, y1).im in safe_types and board.get_cell(x1, y1).im in safe_types:
                     break
             except:
                 pass
@@ -66,6 +69,9 @@ class Mill(pygame.sprite.Sprite):
     def update(self, *args, **kwargs):
         self.tick += 1
         if self.tick % 50 == 0:
+            if WHEAT.get_value() >= 50:
+                BREAD.add(10)
+                WHEAT.decrease(50)
             self.image = load_image('mill_1.png')
         elif self.tick % 50 == 13:
             self.image = load_image('mill_2.png')
@@ -87,8 +93,11 @@ class Ferma(pygame.sprite.Sprite):
             self.rect.x, self.rect.y = random.randrange(16, WIDTH, 16), random.randrange(16, HEIGHT, 16)
             x = self.rect.x
             y = self.rect.y
+            x1 = x + 16
+            y1 = y + 16
             try:
-                if board.get_cell(x, y).im in safe_types:
+                if board.get_cell(x, y).im in safe_types and board.get_cell(x1, y).im in safe_types \
+                        and board.get_cell(x, y1).im in safe_types and board.get_cell(x1, y1).im in safe_types:
                     break
             except:
                 pass
@@ -96,6 +105,7 @@ class Ferma(pygame.sprite.Sprite):
     def update(self, *args, **kwargs):
         self.tick += 1
         if self.tick % 200 == 0:
+            WHEAT.add(10)
             self.image = load_image('ferma_1.png')
         elif self.tick % 200 == 50:
             self.image = load_image('ferma_2.png')
@@ -117,8 +127,11 @@ class Sawmill(pygame.sprite.Sprite):
             self.rect.x, self.rect.y = random.randrange(16, WIDTH, 16), random.randrange(16, HEIGHT, 16)
             x = self.rect.x
             y = self.rect.y
+            x1 = x + 16
+            y1 = y + 16
             try:
-                if board.get_cell(x, y).im in safe_types:
+                if board.get_cell(x, y).im in safe_types and board.get_cell(x1, y).im in safe_types \
+                        and board.get_cell(x, y1).im in safe_types and board.get_cell(x1, y1).im in safe_types:
                     break
             except:
                 pass
@@ -129,20 +142,18 @@ class Sawmill(pygame.sprite.Sprite):
 
     def update(self, *args, **kwargs):
         self.tick += 1
+        if self.tick % 50 == 0:
+            WOOD.add(20)
 
 
-class Quarry(pygame.sprite.Sprite):
+class FoundryIron(pygame.sprite.Sprite):
     def __init__(self, group, board):
         super().__init__(group)
-        self.image = load_image('quarry.png')
+        self.image = load_image('foundry.png')
         self.rect = self.image.get_rect()
         self.board = board
         self.tick = 0
         self.flag = True
-        # ----------------------------------------------------------------------------------------------------------------------
-        #   ПЕРЕМЕННАЯ ВРЕМЕННА И ПОДЛЕЖИТ РАСТРЕЛУ!!!
-        self.quarry = 0
-        # ----------------------------------------------------------------------------------------------------------------------
         while True:
             self.rect.x, self.rect.y = random.randrange(0, WIDTH, 16), random.randrange(0, HEIGHT, 16)
             x = self.rect.x
@@ -159,20 +170,20 @@ class Quarry(pygame.sprite.Sprite):
 
     def update(self, *args, **kwargs):
         self.tick += 1
+        if self.tick % 100 == 0:
+            if IRON_ORE.get_value() >= 10:
+                IRON.add(50)
+                IRON_ORE.decrease(10)
 
 
-class Bread(pygame.sprite.Sprite):
+class FoundryGold(pygame.sprite.Sprite):
     def __init__(self, group, board):
         super().__init__(group)
-        self.image = load_image('bread.png')
+        self.image = load_image('foundry.png')
         self.rect = self.image.get_rect()
         self.board = board
         self.tick = 0
         self.flag = True
-        # ----------------------------------------------------------------------------------------------------------------------
-        #   ПЕРЕМЕННАЯ ВРЕМЕННА И ПОДЛЕЖИТ РАСТРЕЛУ!!!
-        self.bread = 0
-        # ----------------------------------------------------------------------------------------------------------------------
         while True:
             self.rect.x, self.rect.y = random.randrange(0, WIDTH, 16), random.randrange(0, HEIGHT, 16)
             x = self.rect.x
@@ -189,61 +200,29 @@ class Bread(pygame.sprite.Sprite):
 
     def update(self, *args, **kwargs):
         self.tick += 1
+        if self.tick % 100 == 0:
+            if GOLD_ORE.get_value() >= 10:
+                MONEY.add(50)
+                GOLD_ORE.decrease(10)
 
 
-class Foundry(pygame.sprite.Sprite):
-        def __init__(self, group, board):
-            super().__init__(group)
-            self.image = load_image('foundry.png')
-            self.rect = self.image.get_rect()
-            self.board = board
-            self.tick = 0
-            self.flag = True
-
-            # ----------------------------------------------------------------------------------------------------------------------
-            #   ПЕРЕМЕННАЯ ВРЕМЕННА И ПОДЛЕЖИТ РАСТРЕЛУ!!!
-            self.foundry = 0
-            # ----------------------------------------------------------------------------------------------------------------------
-            while True:
-                self.rect.x, self.rect.y = random.randrange(0, WIDTH, 16), random.randrange(0, HEIGHT, 16)
-                x = self.rect.x
-                y = self.rect.y
-                x1 = x + 16
-                y1 = y + 16
-
-                if board.get_cell(x, y).im in safe_types and board.get_cell(x1, y).im in safe_types \
-                        and board.get_cell(x, y1).im in safe_types and board.get_cell(x1, y1).im in safe_types:
+class MineRock(pygame.sprite.Sprite):
+    def __init__(self, group, board):
+        super().__init__(group)
+        self.image = load_image('malevich_square.png')
+        self.rect = self.image.get_rect()
+        self.board = board
+        self.tick = 0
+        self.flag = True
+        while True:
+            self.rect.x, self.rect.y = random.randrange(16, WIDTH, 16), random.randrange(16, HEIGHT, 16)
+            x = self.rect.x
+            y = self.rect.y
+            try:
+                if board.get_cell(x, y).im in rock_types:
                     break
-
-        def select(self, x, y):
-            if self.rect.x <= x <= self.rect.x + 32 and self.rect.y <= y <= self.rect.y + 32:
-                print('WIP')
-
-        def update(self, *args, **kwargs):
-            self.tick += 1
-
-
-class Mine(pygame.sprite.Sprite):
-    def __init__(self, group, board):
-        super().__init__(group)
-        self.image = load_image('mine.png')
-        self.rect = self.image.get_rect()
-        self.board = board
-        self.tick = 0
-        self.flag = True
-        # ----------------------------------------------------------------------------------------------------------------------
-        #   ПЕРЕМЕННАЯ ВРЕМЕННА И ПОДЛЕЖИТ РАСТРЕЛУ!!!
-        self.mine = 0
-        # ----------------------------------------------------------------------------------------------------------------------
-        while True:
-            self.rect.x, self.rect.y = random.randrange(0, WIDTH, 16), random.randrange(0, HEIGHT, 16)
-            x = self.rect.x
-            y = self.rect.y
-            x1 = x + 16
-            y1 = y + 16
-            if board.get_cell(x, y).im in safe_types and board.get_cell(x1, y).im in safe_types \
-                    and board.get_cell(x, y1).im in safe_types and board.get_cell(x1, y1).im in safe_types:
-                break
+            except:
+                pass
 
     def select(self, x, y):
         if self.rect.x <= x <= self.rect.x + 32 and self.rect.y <= y <= self.rect.y + 32:
@@ -251,13 +230,61 @@ class Mine(pygame.sprite.Sprite):
 
     def update(self, *args, **kwargs):
         self.tick += 1
+        if self.tick % 50 == 0:
+            STONE.add(10)
 
 
-class Berater(pygame.sprite.Sprite):
+class MineGold(pygame.sprite.Sprite):
     def __init__(self, group, board):
         super().__init__(group)
-        self.image = load_image('berater.png')
+        self.image = load_image('malevich_square.png')
         self.rect = self.image.get_rect()
         self.board = board
         self.tick = 0
         self.flag = True
+        while True:
+            self.rect.x, self.rect.y = random.randrange(16, WIDTH, 16), random.randrange(16, HEIGHT, 16)
+            x = self.rect.x
+            y = self.rect.y
+            try:
+                if board.get_cell(x, y).im == 'gold.png':
+                    break
+            except:
+                pass
+
+    def select(self, x, y):
+        if self.rect.x <= x <= self.rect.x + 32 and self.rect.y <= y <= self.rect.y + 32:
+            print('WIP')
+
+    def update(self, *args, **kwargs):
+        self.tick += 1
+        if self.tick % 50 == 0:
+            GOLD_ORE.add(5)
+
+
+class MineIron(pygame.sprite.Sprite):
+    def __init__(self, group, board):
+        super().__init__(group)
+        self.image = load_image('malevich_square.png')
+        self.rect = self.image.get_rect()
+        self.board = board
+        self.tick = 0
+        self.flag = True
+        while True:
+            self.rect.x, self.rect.y = random.randrange(16, WIDTH, 16), random.randrange(16, HEIGHT, 16)
+            x = self.rect.x
+            y = self.rect.y
+            try:
+                if board.get_cell(x, y).im == 'iron.png':
+                    break
+            except:
+                pass
+
+    def select(self, x, y):
+        if self.rect.x <= x <= self.rect.x + 32 and self.rect.y <= y <= self.rect.y + 32:
+            print('WIP')
+
+    def update(self, *args, **kwargs):
+        self.tick += 1
+        if self.tick % 50 == 0:
+            IRON_ORE.add(5)
