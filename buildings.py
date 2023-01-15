@@ -4,7 +4,6 @@ from cells import *
 from resources import *
 from resources import BREAD, WOOD, STONE, IRON, MONEY, WHEAT, IRON_ORE, GOLD_ORE
 import random
-from particle import create_particles
 
 
 class MainHall(pygame.sprite.Sprite):
@@ -72,6 +71,10 @@ class Mill(pygame.sprite.Sprite):
         self.tick += 1
         if self.tick % 50 == 0:
             self.image = load_image('mill_1.png')
+            if self.tick % 500 == 0:
+                if WHEAT.get_value() >= 100:
+                    WHEAT.decrease(100)
+                    BREAD.add(5)
         elif self.tick % 50 == 13:
             self.image = load_image('mill_2.png')
         elif self.tick % 50 == 25:
@@ -110,13 +113,13 @@ class Ferma(pygame.sprite.Sprite):
     def update(self, *args, **kwargs):
         self.tick += 1
         if self.tick % 200 == 0:
-            WHEAT.add(round(10 * self.prod_mod / 100))
             self.image = load_image('ferma_1.png')
         elif self.tick % 200 == 50:
             self.image = load_image('ferma_2.png')
         elif self.tick % 200 == 100:
             self.image = load_image('ferma_3.png')
         elif self.tick % 200 == 150:
+            WHEAT.add(round(10 * self.prod_mod / 100))
             self.image = load_image('ferma_4.png')
 
 
