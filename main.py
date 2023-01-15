@@ -3,12 +3,10 @@ from settings import *
 from cells import Board
 from buildings import *
 import os
-from resources import BREAD, WOOD, STONE, IRON, MONEY, WHEAT, IRON_ORE, GOLD_ORE
 from interface import *
 import datetime
 
 pygame.init()
-
 
 os.environ['SDL_VIDEO_WINDOW_POS'] = "0,0"
 screen = pygame.display.set_mode(TRUE_SIZE, pygame.NOFRAME)
@@ -43,7 +41,7 @@ while running:
 
             if fl_btn_select == 0:
 
-                for btn in interface:
+                for btn in itr:
                     if btn.select(x, y):
 
                         x_tr = btn.rect.x
@@ -58,11 +56,11 @@ while running:
                     button_building_connect(buildings, board, pygame.mouse.get_pos()[0] // 16 * 16,
                                             pygame.mouse.get_pos()[1] // 16 * 16, im_tr)
                     tr_btn.kill()
-                    Button(interface, im_tr, x_tr, y_tr)
+                    Button(itr, im_tr, x_tr, y_tr)
                 else:
                     fl_btn_select = 0
                     tr_btn.kill()
-                    Button(interface, im_tr, x_tr, y_tr)
+                    Button(itr, im_tr, x_tr, y_tr)
 
     if fl_btn_select == 1:
         tr_btn.rect = (pygame.mouse.get_pos()[0] // 16 * 16, pygame.mouse.get_pos()[1] // 16 * 16)
@@ -76,11 +74,15 @@ while running:
     buildings.draw(screen)
     buildings.update()
 
-    interface.draw(screen)
-    interface.update()
+    itr.draw(screen)
+    itr.update()
+
+    icn.draw(screen)
+    icn.update()
 
     display([BREAD, WOOD, STONE, IRON, MONEY, WHEAT, IRON_ORE, GOLD_ORE], screen)
 
+    print(pygame.time.get_ticks())
 
     pygame.display.flip()
 

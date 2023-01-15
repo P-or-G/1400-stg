@@ -27,9 +27,11 @@ rock_types = ['rock_1.png', 'rock_2.png', 'rock_3.png']
 fertile_soils = ['f_s1.png', 'f_s2.png']
 
 buttons_types = ['mill_btn.png', 'saw_btn.png', 'fou_btn.png', 'farm_btn.png',
-                 'mill_btn.png', 'mill_btn.png', 'mill_btn.png', 'mill_btn.png']
+                 'gfou_btn.png', 'mill_btn.png', 'mill_btn.png', 'mill_btn.png']
 
-resources_icons = ['']
+resources_icons = ['food_icon.png', 'wood_icon.png', 'rock_icon.png', 'iron_icon.png',
+                   'money_icon.png', 'wheat_icon.png', 'iron_ore_icon.png', 'gold_icon.png']
+
 
 # - Gameplay options
 start_money = 100

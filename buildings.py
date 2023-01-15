@@ -242,6 +242,7 @@ class FoundryGold(pygame.sprite.Sprite):
             if GOLD_ORE.get_value() >= 10:
                 MONEY.add(50)
                 GOLD_ORE.decrease(10)
+                self.tick = 0
 
 
 class MineRock(pygame.sprite.Sprite):
@@ -252,8 +253,8 @@ class MineRock(pygame.sprite.Sprite):
         self.board = board
         self.tick = 0
         self.flag = True
-        x = self.rect.x
-        y = self.rect.y
+        self.rect.x = x
+        self.rect.y = y
         self.prod_mod = 0
         try:
             for i in range(0, 17, 16):
@@ -290,8 +291,8 @@ class MineGold(pygame.sprite.Sprite):
         self.board = board
         self.tick = 0
         self.flag = True
-        x = self.rect.x
-        y = self.rect.y
+        self.rect.x = x
+        self.rect.y = y
         self.prod_mod = 0
         try:
             for i in range(0, 17, 16):
@@ -328,8 +329,8 @@ class MineIron(pygame.sprite.Sprite):
         self.board = board
         self.tick = 0
         self.flag = True
-        x = self.rect.x
-        y = self.rect.y
+        self.rect.x = x
+        self.rect.y = y
         self.prod_mod = 0
         try:
             for i in range(0, 17, 16):
@@ -367,3 +368,5 @@ def button_building_connect(group, board, x, y, btn):
         Sawmill(group, board, x, y)
     elif btn == 'farm_btn.png':
         Ferma(group, board, x, y)
+    elif btn == 'gfou_btn.png':
+        FoundryGold(group, board, x, y)
