@@ -21,13 +21,13 @@ class MainHall(pygame.sprite.Sprite):
             x = self.rect.x
             y = self.rect.y
             try:
-                for i in range(0, 65, 16):
+                for i in range(0, 64, 16):
                     if board.get_cell(x + i, y).im in safe_types:
                         f1 = True
                     else:
                         f1 = False
                         break
-                for i in range(0, 65, 16):
+                for i in range(0, 64, 16):
                     if board.get_cell(x, y + i).im in safe_types:
                         f2 = True
                     else:
@@ -55,17 +55,19 @@ class Mill(pygame.sprite.Sprite):
         self.tick = 0
         self.flag = True
         self.rect.x, self.rect.y = x, y
-        x1 = x + 16
-        y1 = y + 16
-        try:
-            if board.get_cell(x, y).im in safe_types and board.get_cell(x1, y).im in safe_types and \
-               board.get_cell(x, y1).im in safe_types and board.get_cell(x1, y1).im in safe_types and \
-               len(pygame.sprite.spritecollide(self, group, False)) <= 1:
-                pass
-            else:
-                self.kill()
-        except:
-            pass
+        self.rect.x = x
+        self.rect.y = y
+        self.prod_mod = 0
+        for i in range(0, 17, 16):
+            for j in range(0, 17, 16):
+                if board.get_cell(x + i, y + j).im in safe_types and \
+                        len(pygame.sprite.spritecollide(self, group, False)) <= 1:
+                    self.prod_mod += 100
+        if self.prod_mod != 400:
+            self.kill()
+        else:
+            self.prod_mod = round(self.prod_mod)
+
 
     def update(self, *args, **kwargs):
         self.tick += 1
@@ -95,10 +97,11 @@ class Ferma(pygame.sprite.Sprite):
         self.rect.y = y
         self.prod_mod = 0
         try:
-            for i in range(0, 33, 16):
-                for j in range(0, 33, 16):
+            for i in range(0, 17, 16):
+                for j in range(0, 17, 16):
                     if board.get_cell(x + i, y + j).im in fertile_soils and \
                             len(pygame.sprite.spritecollide(self, group, False)) <= 1:
+                        board.get_cell(x + i, y + j).type_change()
                         if self.prod_mod == 0:
                             self.prod_mod += 100
                         else:
@@ -135,10 +138,11 @@ class Sawmill(pygame.sprite.Sprite):
         self.rect.y = y
         self.prod_mod = 0
         try:
-            for i in range(0, 33, 16):
-                for j in range(0, 33, 16):
+            for i in range(0, 17, 16):
+                for j in range(0, 17, 16):
                     if board.get_cell(x + i, y + j).im == 'forest_3.png' and \
                        len(pygame.sprite.spritecollide(self, group, False)) <= 1:
+                        board.get_cell(x + i, y + j).type_change()
                         if self.prod_mod == 0:
                             self.prod_mod += 100
                         else:
@@ -168,18 +172,21 @@ class FoundryIron(pygame.sprite.Sprite):
         self.board = board
         self.tick = 0
         self.flag = True
-        self.rect.x, self.rect.y = x, y
-        x = self.rect.x
-        y = self.rect.y
-        x1 = x + 16
-        y1 = y + 16
+        self.rect.x = x
+        self.rect.y = y
+        self.prod_mod = 0
         try:
-            if board.get_cell(x, y).im in safe_types and board.get_cell(x1, y).im in safe_types and \
-               board.get_cell(x, y1).im in safe_types and board.get_cell(x1, y1).im in safe_types and \
-               len(pygame.sprite.spritecollide(self, group, False)) <= 1:
-                pass
-            else:
+            for i in range(0, 17, 16):
+                for j in range(0, 17, 16):
+                    print(i, j)
+                    if board.get_cell(x + i, y + j).im in safe_types and \
+                            len(pygame.sprite.spritecollide(self, group, False)) <= 1:
+                        board.get_cell(x + i, y + j).type_change()
+                        self.prod_mod += 100
+            if self.prod_mod != 400:
                 self.kill()
+            else:
+                self.prod_mod = round(self.prod_mod)
         except:
             pass
 
@@ -207,16 +214,23 @@ class FoundryGold(pygame.sprite.Sprite):
         self.board = board
         self.tick = 0
         self.flag = True
-        while True:
-            self.rect.x, self.rect.y = x, y
-            x = self.rect.x
-            y = self.rect.y
-            x1 = x + 16
-            y1 = y + 16
-            if board.get_cell(x, y).im in safe_types and board.get_cell(x1, y).im in safe_types and \
-               board.get_cell(x, y1).im in safe_types and board.get_cell(x1, y1).im in safe_types and \
-               len(pygame.sprite.spritecollide(self, group, False)) <= 1:
-                break
+        self.rect.x = x
+        self.rect.y = y
+        self.prod_mod = 0
+        try:
+            for i in range(0, 17, 16):
+                for j in range(0, 17, 16):
+                    print(i, j)
+                    if board.get_cell(x + i, y + j).im in safe_types and \
+                            len(pygame.sprite.spritecollide(self, group, False)) <= 1:
+                        board.get_cell(x + i, y + j).type_change()
+                        self.prod_mod += 100
+            if self.prod_mod != 400:
+                self.kill()
+            else:
+                self.prod_mod = round(self.prod_mod)
+        except:
+            pass
 
     def select(self, x, y):
         if self.rect.x <= x <= self.rect.x + 32 and self.rect.y <= y <= self.rect.y + 32:
@@ -242,10 +256,15 @@ class MineRock(pygame.sprite.Sprite):
         y = self.rect.y
         self.prod_mod = 0
         try:
-            if board.get_cell(x, y).im in rock_types and \
-               len(pygame.sprite.spritecollide(self, group, False)) <= 1:
-                if self.prod_mod == 0:
-                    self.prod_mod += 100
+            for i in range(0, 17, 16):
+                for j in range(0, 17, 16):
+                    if board.get_cell(x + i, y + j).im == rock_types and \
+                       len(pygame.sprite.spritecollide(self, group, False)) <= 1:
+                        board.get_cell(x + i, y + j).type_change()
+                        if self.prod_mod == 0:
+                            self.prod_mod += 100
+                        else:
+                            self.prod_mod *= 1.5
             if self.prod_mod == 0:
                 self.kill()
             else:
@@ -275,10 +294,15 @@ class MineGold(pygame.sprite.Sprite):
         y = self.rect.y
         self.prod_mod = 0
         try:
-            if board.get_cell(x, y).im == 'gold.png' and \
-               len(pygame.sprite.spritecollide(self, group, False)) <= 1:
-                if self.prod_mod == 0:
-                    self.prod_mod += 100
+            for i in range(0, 17, 16):
+                for j in range(0, 17, 16):
+                    if board.get_cell(x + i, y + j).im == 'gold.png' and \
+                       len(pygame.sprite.spritecollide(self, group, False)) <= 1:
+                        board.get_cell(x + i, y + j).type_change()
+                        if self.prod_mod == 0:
+                            self.prod_mod += 100
+                        else:
+                            self.prod_mod *= 1.5
             if self.prod_mod == 0:
                 self.kill()
             else:
@@ -308,10 +332,15 @@ class MineIron(pygame.sprite.Sprite):
         y = self.rect.y
         self.prod_mod = 0
         try:
-            if board.get_cell(x, y).im == 'iron.png' and \
-               len(pygame.sprite.spritecollide(self, group, False)) <= 1:
-                if self.prod_mod == 0:
-                    self.prod_mod += 100
+            for i in range(0, 17, 16):
+                for j in range(0, 17, 16):
+                    if board.get_cell(x + i, y + j).im == 'iron.png' and \
+                       len(pygame.sprite.spritecollide(self, group, False)) <= 1:
+                        board.get_cell(x + i, y + j).type_change()
+                        if self.prod_mod == 0:
+                            self.prod_mod += 100
+                        else:
+                            self.prod_mod *= 1.5
             if self.prod_mod == 0:
                 self.kill()
             else:

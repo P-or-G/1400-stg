@@ -33,6 +33,11 @@ class Cell(pygame.sprite.Sprite):
     def get_im(self):
         return self.im
 
+    def type_change(self):
+        if self.im not in safe_types:
+            self.im = ass_cell_y_crds[random.randint(0, 3)]
+            self.image = load_image(self.im)
+
 
 class Board:
     # создание поля
