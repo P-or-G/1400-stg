@@ -22,6 +22,7 @@ class Button(pygame.sprite.Sprite):
             return True
         return False
 
+
 class Icon(pygame.sprite.Sprite):
     def __init__(self, group, im, x, y):
         super().__init__(group)

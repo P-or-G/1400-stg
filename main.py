@@ -1,12 +1,6 @@
-import pygame
-from settings import *
 from cells import Board
-from buildings import *
-import os
 from interface import *
-import datetime
 
-pygame.init()
 
 os.environ['SDL_VIDEO_WINDOW_POS'] = "0,0"
 screen = pygame.display.set_mode(TRUE_SIZE, pygame.NOFRAME)
@@ -18,7 +12,6 @@ all_sprites = board.render()
 all_sprites.draw(screen)
 all_sprites.update()
 
-
 buildings = pygame.sprite.Group()
 
 mh = MainHall(buildings, board)
@@ -26,12 +19,23 @@ mh = MainHall(buildings, board)
 
 interface = inter()
 
-clock = pygame.time.Clock()
-
 time_count = 0
 fl_btn_select = 0
 running = True
+
+tr_btn = ''
+im_tr = ''
+x_tr = ''
+y_tr = ''
+cou = 0
 while running:
+    TICK.add(1)
+    image = load_image('berater_1.png')
+    rect = image.get_rect()
+    rect.x = 1024
+    rect.y = 16
+    if TICK.get_value() == 1000:
+        TICK.decrease(999)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -62,14 +66,17 @@ while running:
                     tr_btn.kill()
                     Button(itr, im_tr, x_tr, y_tr)
 
+            x, y = pygame.mouse.get_pos()
+            mh.select(x, y)
+
     if fl_btn_select == 1:
         tr_btn.rect = (pygame.mouse.get_pos()[0] // 16 * 16, pygame.mouse.get_pos()[1] // 16 * 16)
 
     clock.tick(FPS)
     screen.fill(pygame.Color('black'))
 
-    all_sprites.draw(screen)
     all_sprites.update()
+    all_sprites.draw(screen)
 
     buildings.draw(screen)
     buildings.update()
@@ -80,9 +87,9 @@ while running:
     icn.draw(screen)
     icn.update()
 
-    display([BREAD, WOOD, STONE, IRON, MONEY, WHEAT, IRON_ORE, GOLD_ORE], screen)
+    peoples.update()
 
-    print(pygame.time.get_ticks())
+    display([BREAD, WOOD, STONE, IRON, MONEY, WHEAT, IRON_ORE, GOLD_ORE, peoples], screen)
 
     pygame.display.flip()
 

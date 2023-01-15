@@ -10,6 +10,8 @@ class Cell(pygame.sprite.Sprite):
         # Это очень важно !!!
         super().__init__(group)
         type_key = random.randint(1, 1200)
+        if type_key % 328 == 0:
+            self.im = ass_cell_y_crds[11]
         if type_key % 300 == 0:
             self.im = ass_cell_y_crds[7]
         elif type_key % 200 == 0:
