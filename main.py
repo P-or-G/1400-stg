@@ -5,6 +5,7 @@ from buildings import *
 import os
 from resources import BREAD, WOOD, STONE, IRON, MONEY, WHEAT, IRON_ORE, GOLD_ORE
 from interface import *
+import datetime
 
 pygame.init()
 
@@ -25,14 +26,11 @@ buildings = pygame.sprite.Group()
 mh = MainHall(buildings, board)
 
 
-interface = pygame.sprite.Group()
-
-Bt1 = Button(interface, 'mill_btn.png', 1024, 512)
-Bt2 = Button(interface, 'mill_btn.png', 1060, 512)
-
+interface = inter()
 
 clock = pygame.time.Clock()
 
+time_count = 0
 fl_btn_select = 0
 running = True
 while running:
@@ -55,16 +53,21 @@ while running:
                         fl_btn_select = 1
 
             elif fl_btn_select == 1:
-
-                fl_btn_select = 0
-                Mill(buildings, board, pygame.mouse.get_pos()[0] // 16 * 16, pygame.mouse.get_pos()[1] // 16 * 16)
-                tr_btn.kill()
-                Button(interface, im_tr, x_tr, y_tr)
+                if pygame.mouse.get_pos()[0] < 1024 - 16:
+                    fl_btn_select = 0
+                    button_building_connect(buildings, board, pygame.mouse.get_pos()[0] // 16 * 16,
+                                            pygame.mouse.get_pos()[1] // 16 * 16, im_tr)
+                    tr_btn.kill()
+                    Button(interface, im_tr, x_tr, y_tr)
+                else:
+                    fl_btn_select = 0
+                    tr_btn.kill()
+                    Button(interface, im_tr, x_tr, y_tr)
 
     if fl_btn_select == 1:
         tr_btn.rect = (pygame.mouse.get_pos()[0] // 16 * 16, pygame.mouse.get_pos()[1] // 16 * 16)
 
-    clock.tick(60)
+    clock.tick(FPS)
     screen.fill(pygame.Color('black'))
 
     all_sprites.draw(screen)
@@ -75,6 +78,9 @@ while running:
 
     interface.draw(screen)
     interface.update()
+
+    display([BREAD, WOOD, STONE, IRON, MONEY, WHEAT, IRON_ORE, GOLD_ORE], screen)
+
 
     pygame.display.flip()
 

@@ -1,7 +1,6 @@
 import os
 import sys
 import pygame
-import random
 
 # - Window options
 TRUE_SIZE = T_W, T_H = 1920, 1024
@@ -11,9 +10,14 @@ CELL_VERT_NUM = HEIGHT // CELL_SIDE
 CELL_HOR_NUM = WIDTH // CELL_SIDE
 FPS = 60
 
+
 # - Sprites options
-ass_cell_y_crds = ['grass_1.png', 'grass_2.png', 'grass_3.png', 'grass_4.png', 'rock_1.png', 'rock_2.png', 'rock_3.png',
-                                                                                                         'iron.png']
+GRAVITY = 0.1
+
+ass_cell_y_crds = ['grass_1.png', 'grass_2.png', 'grass_3.png', 'grass_4.png',
+                   'rock_1.png', 'rock_2.png', 'rock_3.png', 'iron.png', 'forest_3.png',
+                   'f_s1.png', 'f_s2.png']
+
 safe_types = ['grass_1.png', 'grass_2.png', 'grass_3.png', 'grass_4.png']
 
 sawmill_types = ['sawmill_1.png', 'sawmill_2.png']
@@ -21,6 +25,11 @@ sawmill_types = ['sawmill_1.png', 'sawmill_2.png']
 rock_types = ['rock_1.png', 'rock_2.png', 'rock_3.png']
 
 fertile_soils = ['f_s1.png', 'f_s2.png']
+
+buttons_types = ['mill_btn.png', 'saw_btn.png', 'fou_btn.png', 'farm_btn.png',
+                 'mill_btn.png', 'mill_btn.png', 'mill_btn.png', 'mill_btn.png']
+
+resources_icons = ['']
 
 # - Gameplay options
 start_money = 100

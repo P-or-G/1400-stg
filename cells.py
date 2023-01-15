@@ -1,6 +1,7 @@
 import pygame
 from buildings import *
 from settings import *
+import random
 
 
 class Cell(pygame.sprite.Sprite):
@@ -8,11 +9,15 @@ class Cell(pygame.sprite.Sprite):
         # НЕОБХОДИМО вызвать конструктор родительского класса Sprite.
         # Это очень важно !!!
         super().__init__(group)
-        type_key = random.randint(1, 1000)
-        if type_key % 200 == 0:
+        type_key = random.randint(1, 1200)
+        if type_key % 300 == 0:
             self.im = ass_cell_y_crds[7]
-        elif type_key % 100 == 0:
+        elif type_key % 200 == 0:
             self.im = ass_cell_y_crds[random.randint(4, 6)]
+        elif type_key % 128 == 0:
+            self.im = ass_cell_y_crds[8]
+        elif type_key % 38 == 0:
+            self.im = ass_cell_y_crds[random.randint(9, 10)]
         else:
             self.im = ass_cell_y_crds[random.randint(0, 3)]
         self.image = load_image(self.im)
