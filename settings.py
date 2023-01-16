@@ -4,6 +4,7 @@ import pygame
 
 pygame.init()
 clock = pygame.time.Clock()
+pygame.font.init()
 
 # - Window options
 TRUE_SIZE = T_W, T_H = 1920, 1024
