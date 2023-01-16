@@ -59,10 +59,21 @@ class MainHall(pygame.sprite.Sprite):
 
     def select(self, x, y):
         if self.rect.x <= x <= self.rect.x + 64 and self.rect.y <= y <= self.rect.y + 64:
-            if peoples.get_value() >= 1000 and Mhl.getvalue() == 1:
+            if peoples.get_value() >= first_upgrade_people and Mhl.getvalue() == 1 \
+               and WOOD.get_value() >= first_upgrade_wood and STONE.get_value() >= first_upgrade_stone \
+               and IRON.get_value() >= first_upgrade_iron:
+
+                WOOD.decrease(first_upgrade_wood)
+                STONE.decrease(first_upgrade_stone)
+                IRON.decrease(first_upgrade_iron)
                 self.image = load_image('main_hall_lvl2.png')
+
                 Mhl.upgrade()
-            elif peoples.get_value() >= 10000 and Mhl.getvalue() == 2:
+            elif peoples.get_value() >= first_upgrade_people and Mhl.getvalue() == 2 \
+                    and WOOD.get_value() >= second_upgrade_wood and STONE.get_value() >= second_upgrade_stone \
+                    and IRON.get_value() >= second_upgrade_iron and GOLD.get_value() >= second_upgrade_gold \
+                    and MONEY.get_value() >= second_upgrade_money:
+
                 self.image = load_image('main_hall_lvl3.png')
                 Mhl.upgrade()
 
@@ -78,11 +89,12 @@ class Mill(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
         self.prod_mod = 0
+        self.cou = 0
         for i in range(0, 17, 16):
             for j in range(0, 17, 16):
                 if board.get_cell(x + i, y + j).im in safe_types and \
-                        len(pygame.sprite.spritecollide(self, group, False)) <= 1:
-                        self.prod_mod += 100
+                   len(pygame.sprite.spritecollide(self, group, False)) <= 1:
+                    self.prod_mod += 100
         if self.prod_mod != 400 or WOOD.get_value() < 250 or WHEAT.get_value() < 100:
             self.kill()
         else:
@@ -91,24 +103,19 @@ class Mill(pygame.sprite.Sprite):
             self.prod_mod = round(self.prod_mod)
 
     def update(self, *args, **kwargs):
-        if clock.get_fps() >= 50:
-            if TICK.get_value() % 50 == 0:
-                self.image = load_image('mill_1.png')
-                if TICK.get_value() % 500 == 0:
-                    if WHEAT.get_value() >= 100:
-                        WHEAT.decrease(100)
-                        BREAD.add(5)
-            elif TICK.get_value() % 50 == 13:
-                self.image = load_image('mill_2.png')
-            elif TICK.get_value() % 50 == 25:
-                self.image = load_image('mill_3.png')
-            elif TICK.get_value() % 50 == 38:
-                self.image = load_image('mill_4.png')
-        else:
-            if TICK.get_value() % 500 == 0:
-                if WHEAT.get_value() >= 100:
-                    WHEAT.decrease(100)
-                    BREAD.add(5)
+        self.cou += 1
+        if WHEAT.get_value() >= 100:
+            WHEAT.decrease(100)
+            BREAD.add(5)
+        if self.cou == 1:
+            self.image = load_image('mill_1.png')
+        elif self.cou == 2:
+            self.image = load_image('mill_2.png')
+        elif self.cou == 3:
+            self.image = load_image('mill_3.png')
+        elif self.cou == 4:
+            self.image = load_image('mill_4.png')
+            self.cou = 0
 
 
 class Ferma(pygame.sprite.Sprite):
@@ -117,36 +124,41 @@ class Ferma(pygame.sprite.Sprite):
         self.image = load_image('ferma_1.png')
         self.rect = self.image.get_rect()
         self.board = board
-        self.flag = True
+        self.flag = False
         self.rect.x = x
         self.rect.y = y
         self.prod_mod = 0
-        for i in range(0, 17, 16):
-            for j in range(0, 17, 16):
-                if board.get_cell(x + i, y + j).im in fertile_soils and \
-                        len(pygame.sprite.spritecollide(self, group, False)) <= 1:
-                    board.get_cell(x + i, y + j).type_change()
-                    if self.prod_mod == 0:
-                        self.prod_mod += 100
-                    else:
-                        self.prod_mod *= 1.5
-        if self.prod_mod == 0 or WOOD.get_value() < 100:
-            self.kill()
-        else:
-            WOOD.decrease(100)
-            self.prod_mod = round(self.prod_mod)
-
+        self.cou = 1
+        try:
+            for i in range(0, 17, 16):
+                for j in range(0, 17, 16):
+                    if board.get_cell(x + i, y + j).im in fertile_soils and \
+                            len(pygame.sprite.spritecollide(self, group, False)) <= 1:
+                        cells = [board.get_cell(x + i, y + j)]
+                        if self.prod_mod == 0:
+                            self.prod_mod += 100
+            if self.prod_mod == 0 or WOOD.get_value() < 100:
+                self.kill()
+            else:
+                for cell in cells:
+                    cell.type_change()
+                WOOD.decrease(100)
+                self.flag = True
+        except:
+            pass
 
     def update(self):
-        if TICK.get_value() % 200 == 0:
+        WHEAT.add(50)
+        if self.cou == 1:
             self.image = load_image('ferma_1.png')
-        elif TICK.get_value() % 200 == 50:
+        elif self.cou == 2:
             self.image = load_image('ferma_2.png')
-        elif TICK.get_value() % 200 == 100:
+        elif self.cou == 3:
             self.image = load_image('ferma_3.png')
-        elif TICK.get_value() % 200 == 150:
-            WHEAT.add(round(10 * self.prod_mod / 100))
+        elif self.cou == 4:
             self.image = load_image('ferma_4.png')
+            self.cou = 0
+        self.cou += 1
 
 
 class Sawmill(pygame.sprite.Sprite):
@@ -159,115 +171,84 @@ class Sawmill(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
         self.prod_mod = 0
-        try:
-            for i in range(0, 17, 16):
-                for j in range(0, 17, 16):
-                    if board.get_cell(x + i, y + j).im == 'forest_3.png' and \
-                       len(pygame.sprite.spritecollide(self, group, False)) <= 1:
-                        board.get_cell(x + i, y + j).type_change()
-                        if self.prod_mod == 0:
-                            self.prod_mod += 100
-                        else:
-                            self.prod_mod *= 1.5
-            if self.prod_mod == 0 or WHEAT.get_value() <= 200:
-                self.kill()
-            else:
-                WHEAT.decrease(200)
-                self.prod_mod = round(self.prod_mod)
-        except:
-            pass
-
-    def select(self, x, y):
-        if self.rect.x <= x <= self.rect.x + 32 and self.rect.y <= y <= self.rect.y + 32:
-            print('WIP')
+        for i in range(0, 17, 16):
+            for j in range(0, 17, 16):
+                if board.get_cell(x + i, y + j).im == 'forest_3.png' and \
+                   len(pygame.sprite.spritecollide(self, group, False)) <= 1:
+                    cells = [board.get_cell(x + i, y + j)]
+                    if self.prod_mod == 0:
+                        self.prod_mod += 100
+                    else:
+                        self.prod_mod *= 1.5
+        if self.prod_mod == 0 or WHEAT.get_value() <= 200:
+            self.kill()
+        else:
+            for cell in cells:
+                cell.type_change()
+            WHEAT.decrease(200)
+            self.prod_mod = round(self.prod_mod)
 
     def update(self, *args, **kwargs):
-        if TICK.get_value() % 50 == 0:
-            WOOD.add(round(10 * self.prod_mod / 100))
+        WOOD.add(10)
 
 
 class FoundryIron(pygame.sprite.Sprite):
     def __init__(self, group, board, x, y):
         super().__init__(group)
-        self.image = load_image('foundry.png')
+        self.image = load_image('foundry_iron_1.png')
         self.rect = self.image.get_rect()
         self.board = board
         self.flag = True
         self.rect.x = x
         self.rect.y = y
         self.prod_mod = 0
-        try:
-            for i in range(0, 17, 16):
-                for j in range(0, 17, 16):
-                    if board.get_cell(x + i, y + j).im in safe_types and \
-                            len(pygame.sprite.spritecollide(self, group, False)) <= 1:
-                        board.get_cell(x + i, y + j).type_change()
-                        self.prod_mod += 100
-            if self.prod_mod != 400 or STONE.get_value() < 100 or WOOD.get_value() < 150 or WHEAT.get_value() < 100:
-                self.kill()
-            else:
-                WOOD.decrease(150)
-                STONE.decrease(100)
-                WHEAT.decrease(100)
-                self.prod_mod = round(self.prod_mod)
-        except:
-            pass
-
-    def select(self, x, y):
-        if self.rect.x <= x <= self.rect.x + 32 and self.rect.y <= y <= self.rect.y + 32:
-            print('WIP')
+        for i in range(0, 17, 16):
+            for j in range(0, 17, 16):
+                if board.get_cell(x + i, y + j).im in safe_types and \
+                        len(pygame.sprite.spritecollide(self, group, False)) <= 1:
+                    self.prod_mod += 100
+        if self.prod_mod != 400 or STONE.get_value() < 100 or WOOD.get_value() < 150 or WHEAT.get_value() < 100:
+            self.kill()
+        else:
+            WOOD.decrease(150)
+            STONE.decrease(100)
+            WHEAT.decrease(100)
+            self.prod_mod = round(self.prod_mod)
 
     def update(self, *args, **kwargs):
-        if TICK.get_value() % 100 == 0:
-            if IRON_ORE.get_value() >= 10:
-                IRON.add(10)
-                IRON_ORE.decrease(10)
-        if TICK.get_value() % 100 == 0:
-            self.image = load_image('foundry_iron_1.png')
-        elif TICK.get_value() % 100 == 50:
-            self.image = load_image('foundry_iron_2.png')
+        if IRON_ORE.get_value() >= 10:
+            IRON.add(10)
+            IRON_ORE.decrease(10)
 
 
 class FoundryGold(pygame.sprite.Sprite):
     def __init__(self, group, board, x, y):
         super().__init__(group)
-        self.image = load_image('foundry.png')
+        self.image = load_image('foundry_gold_1.png')
         self.rect = self.image.get_rect()
         self.board = board
         self.flag = True
         self.rect.x = x
         self.rect.y = y
         self.prod_mod = 0
-        try:
-            for i in range(0, 17, 16):
-                for j in range(0, 17, 16):
-                    if board.get_cell(x + i, y + j).im in safe_types and \
-                            len(pygame.sprite.spritecollide(self, group, False)) <= 1:
-                        board.get_cell(x + i, y + j).type_change()
-                        self.prod_mod += 100
-            if self.prod_mod != 400 or STONE.get_value() < 100 or WOOD.get_value() < 150 or WHEAT.get_value() < 100:
-                self.kill()
-            else:
-                WOOD.decrease(150)
-                STONE.decrease(100)
-                WHEAT.decrease(100)
-                self.prod_mod = round(self.prod_mod)
-        except:
-            pass
-
-    def select(self, x, y):
-        if self.rect.x <= x <= self.rect.x + 32 and self.rect.y <= y <= self.rect.y + 32:
-            print('WIP')
+        for i in range(0, 17, 16):
+            for j in range(0, 17, 16):
+                if board.get_cell(x + i, y + j).im in safe_types and \
+                        len(pygame.sprite.spritecollide(self, group, False)) <= 1:
+                    board.get_cell(x + i, y + j).type_change()
+                    self.prod_mod += 100
+        if self.prod_mod != 400 or STONE.get_value() < 100 or WOOD.get_value() < 150 or WHEAT.get_value() < 100:
+            self.kill()
+        else:
+            WOOD.decrease(150)
+            STONE.decrease(100)
+            WHEAT.decrease(100)
+            self.prod_mod = round(self.prod_mod)
 
     def update(self, *args, **kwargs):
-        if TICK.get_value() % 100 == 0:
-            if IRON_ORE.get_value() >= 10:
-                IRON.add(10)
-                IRON_ORE.decrease(10)
-        if TICK.get_value() % 100 == 0:
-            self.image = load_image('foundry_gold_1.png')
-        elif TICK.get_value() % 100 == 50:
-            self.image = load_image('foundry_gold_2.png')
+        if IRON_ORE.get_value() >= 10:
+            IRON.add(10)
+            IRON_ORE.decrease(10)
 
 
 class MineRock(pygame.sprite.Sprite):
@@ -280,112 +261,90 @@ class MineRock(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
         self.prod_mod = 0
-        try:
-            for i in range(0, 17, 16):
-                for j in range(0, 17, 16):
-                    if board.get_cell(x + i, y + j).im in rock_types and \
-                       len(pygame.sprite.spritecollide(self, group, False)) <= 1:
-                        board.get_cell(x + i, y + j).type_change()
-                        if self.prod_mod == 0:
-                            self.prod_mod += 100
-                        else:
-                            self.prod_mod *= 1.5
-            if self.prod_mod == 0 or WOOD.get_value() < 250 or WHEAT.get_value() < 150:
-                self.kill()
-            else:
-                WHEAT.decrease(150)
-                WOOD.decrease(250)
-                self.prod_mod = round(self.prod_mod)
-        except:
-            pass
-
-    def select(self, x, y):
-        if self.rect.x <= x <= self.rect.x + 32 and self.rect.y <= y <= self.rect.y + 32:
-            print('WIP')
+        for i in range(0, 17, 16):
+            for j in range(0, 17, 16):
+                if board.get_cell(x + i, y + j).im in rock_types and \
+                   len(pygame.sprite.spritecollide(self, group, False)) <= 1:
+                    cells = [board.get_cell(x + i, y + j)]
+                    if self.prod_mod == 0:
+                        self.prod_mod += 100
+                    else:
+                        self.prod_mod *= 1.5
+        if self.prod_mod == 0 or WOOD.get_value() < 250 or WHEAT.get_value() < 150:
+            self.kill()
+        else:
+            for cell in cells:
+                cell.type_change()
+            WHEAT.decrease(150)
+            WOOD.decrease(250)
+            self.prod_mod = round(self.prod_mod)
 
     def update(self, *args, **kwargs):
-        if TICK.get_value() % 50 == 0:
-            STONE.add(10)
+        STONE.add(20)
 
 
 class MineGold(pygame.sprite.Sprite):
     def __init__(self, group, board, x, y):
         super().__init__(group)
-        self.image = load_image('malevich_square.png')
+        self.image = load_image('gold_mine.png')
         self.rect = self.image.get_rect()
         self.board = board
         self.flag = True
         self.rect.x = x
         self.rect.y = y
         self.prod_mod = 0
-        try:
-            for i in range(0, 17, 16):
-                for j in range(0, 17, 16):
-                    if board.get_cell(x + i, y + j).im == 'gold_rock.png' and \
-                       len(pygame.sprite.spritecollide(self, group, False)) <= 1:
-                        board.get_cell(x + i, y + j).type_change()
-                        if self.prod_mod == 0:
-                            self.prod_mod += 100
-                        else:
-                            self.prod_mod *= 1.5
-            if self.prod_mod == 0 or WOOD.get_value() < 250 or WHEAT.get_value() < 150:
-                self.kill()
-            else:
-                WHEAT.decrease(150)
-                WOOD.decrease(250)
-                self.prod_mod = round(self.prod_mod)
-        except:
-            pass
+        for i in range(0, 17, 16):
+            for j in range(0, 17, 16):
+                if board.get_cell(x + i, y + j).im == 'gold_rock.png' and \
+                   len(pygame.sprite.spritecollide(self, group, False)) <= 1:
+                    cells = [board.get_cell(x + i, y + j)]
+                    if self.prod_mod == 0:
+                        self.prod_mod += 100
+                    else:
+                        self.prod_mod *= 1.5
+        if self.prod_mod == 0 or WOOD.get_value() < 250 or WHEAT.get_value() < 150:
+            self.kill()
+        else:
+            for cell in cells:
+                cell.type_change()
+            WHEAT.decrease(150)
+            WOOD.decrease(250)
+            self.prod_mod = round(self.prod_mod)
 
-    def select(self, x, y):
-        if self.rect.x <= x <= self.rect.x + 32 and self.rect.y <= y <= self.rect.y + 32:
-            print('WIP')
-
-    def update(self, *args, **kwargs):
-        if TICK.get_value() % 50 == 0:
-            GOLD_ORE.add(round(10 * self.prod_mod / 100))
+    def update(self):
+        GOLD_ORE.add(20)
 
 
 class MineIron(pygame.sprite.Sprite):
     def __init__(self, group, board, x, y):
         super().__init__(group)
-        self.image = load_image('malevich_square.png')
+        self.image = load_image('iron_mine.png')
         self.rect = self.image.get_rect()
         self.board = board
         self.flag = True
         self.rect.x = x
         self.rect.y = y
         self.prod_mod = 0
-        try:
-            for i in range(0, 17, 16):
-                for j in range(0, 17, 16):
-                    if board.get_cell(x + i, y + j).im == 'iron.png' and \
-                       len(pygame.sprite.spritecollide(self, group, False)) <= 1:
-                        board.get_cell(x + i, y + j).type_change()
-                        if self.prod_mod == 0:
-                            self.prod_mod += 100
-                        else:
-                            self.prod_mod *= 1.5
-            if self.prod_mod == 0 or WOOD.get_value() < 250 or WHEAT.get_value() < 150:
-                self.kill()
-            else:
-                WHEAT.decrease(150)
-                WOOD.decrease(250)
-                self.prod_mod = round(self.prod_mod)
-        except:
-            pass
+        for i in range(0, 17, 16):
+            for j in range(0, 17, 16):
+                if board.get_cell(x + i, y + j).im == 'iron.png' and \
+                   len(pygame.sprite.spritecollide(self, group, False)) <= 1:
+                    cells = [board.get_cell(x + i, y + j)]
+                    if self.prod_mod == 0:
+                        self.prod_mod += 100
+                    else:
+                        self.prod_mod *= 1.5
+        if self.prod_mod == 0 or WOOD.get_value() < 250 or WHEAT.get_value() < 150:
+            self.kill()
+        else:
+            for cell in cells:
+                cell.type_change()
+            WHEAT.decrease(150)
+            WOOD.decrease(250)
+            self.prod_mod = round(self.prod_mod)
 
-    def select(self, x, y):
-        if self.rect.x <= x <= self.rect.x + 32 and self.rect.y <= y <= self.rect.y + 32:
-            print('WIP')
-
-    def update(self, *args, **kwargs):
-        if TICK.get_value() % 50 == 0:
-            IRON_ORE.add(round(10 * self.prod_mod / 100))
-
-    def update(self, *args, **kwargs):
-        if TICK.get_value() % 50 == 0:
-            IRON_ORE.add(round(10 * self.prod_mod / 100))
+    def update(self):
+        IRON_ORE.add(20)
 
 
 class Mint(pygame.sprite.Sprite):
@@ -398,33 +357,24 @@ class Mint(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
         self.prod_mod = 0
-        try:
-            for i in range(0, 17, 16):
-                for j in range(0, 17, 16):
-                    print(i, j)
-                    if board.get_cell(x + i, y + j).im in safe_types and \
-                            len(pygame.sprite.spritecollide(self, group, False)) <= 1:
-                        board.get_cell(x + i, y + j).type_change()
-                        self.prod_mod += 100
-            if self.prod_mod != 400 or STONE.get_value() < 500 or WOOD.get_value() < 500 or BREAD.get_value() < 500:
-                self.kill()
-            else:
-                WOOD.decrease(500)
-                STONE.decrease(500)
-                BREAD.decrease(500)
-                self.prod_mod = round(self.prod_mod)
-        except:
-            pass
-
-    def select(self, x, y):
-        if self.rect.x <= x <= self.rect.x + 32 and self.rect.y <= y <= self.rect.y + 32:
-            print('WIP')
+        for i in range(0, 17, 16):
+            for j in range(0, 17, 16):
+                print(i, j)
+                if board.get_cell(x + i, y + j).im in safe_types and \
+                        len(pygame.sprite.spritecollide(self, group, False)) <= 1:
+                    self.prod_mod += 100
+        if self.prod_mod != 400 or STONE.get_value() < 500 or WOOD.get_value() < 500 or BREAD.get_value() < 500:
+            self.kill()
+        else:
+            WOOD.decrease(500)
+            STONE.decrease(500)
+            IRON.decrease(50)
+            self.prod_mod = round(self.prod_mod)
 
     def update(self, *args, **kwargs):
-        if TICK.get_value() % 100 == 0:
-            if GOLD.get_value() >= 10:
-                MONEY.add(100)
-                GOLD.decrease(10)
+        if GOLD.get_value() >= 10:
+            MONEY.add(100)
+            GOLD.decrease(10)
 
 
 class House(pygame.sprite.Sprite):
@@ -439,9 +389,9 @@ class House(pygame.sprite.Sprite):
         self.prod_mod = 0
         for i in range(0, 17, 16):
             for j in range(0, 17, 16):
-                    if board.get_cell(x + i, y + j).im in safe_types and \
-                            len(pygame.sprite.spritecollide(self, group, False)) <= 1:
-                        self.prod_mod += 5
+                if board.get_cell(x + i, y + j).im in safe_types and \
+                   len(pygame.sprite.spritecollide(self, group, False)) <= 1:
+                    self.prod_mod += 5
         if self.prod_mod != 20:
             self.kill()
         else:
@@ -465,3 +415,7 @@ def button_building_connect(group, board, x, y, btn):
         Mint(group, board, x, y)
     elif btn == 'house_btn.png':
         House(group, board, x, y)
+    elif btn == 'gold_mine_btn.png':
+        MineGold(group, board, x, y)
+    elif btn == 'iron_mine_btn.png':
+        MineIron(group, board, x, y)

@@ -35,23 +35,36 @@ rock_types = ['rock_1.png', 'rock_2.png', 'rock_3.png']
 fertile_soils = ['f_s1.png', 'f_s2.png']
 
 buttons_types = ['mill_btn.png', 'saw_btn.png', 'fou_btn.png', 'farm_btn.png',
-                 'gfou_btn.png', 'house_btn.png', 'mint_frame.png', 'rock_mine.png']
+                 'gfou_btn.png', 'house_btn.png', 'mint_frame.png', 'rock_mine.png',
+                 'gold_mine_btn.png', 'iron_mine_btn.png']
 
 resources_icons = ['food_icon.png', 'wood_icon.png', 'rock_icon.png', 'iron_icon.png',
                    'money_icon.png', 'wheat_icon.png', 'iron_ore_icon.png', 'gold_icon.png', 'human_icon.png']
 
 
 # - Gameplay options
-start_money = 0
-start_wood = 0
-start_stone = 0
-start_iron = 0
-start_bread = 100
-start_wheat = 0
-start_iron_ore = 0
-start_gold = 0
-start_gold_ore = 0
-start_house_cap = 10
+start_money = 100000
+start_wood = 100000
+start_stone = 100000
+start_iron = 100000
+start_bread = 100000
+start_wheat = 100000
+start_iron_ore = 100000
+start_gold = 100000
+start_gold_ore = 100000
+start_house_cap = 10000
+
+first_upgrade_wood = 3000
+first_upgrade_stone = 5000
+first_upgrade_iron = 300
+first_upgrade_people = 1000
+
+second_upgrade_wood = 1000
+second_upgrade_stone = 15000
+second_upgrade_iron = 2000
+second_upgrade_gold = 1500
+second_upgrade_money = 20000
+second_upgrade_people = 10000
 
 
 # - Useful functions

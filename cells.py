@@ -10,11 +10,11 @@ class Cell(pygame.sprite.Sprite):
         # Это очень важно !!!
         super().__init__(group)
         type_key = random.randint(1, 1200)
-        if type_key % 328 == 0:
+        if type_key % 250 == 0:
             self.im = ass_cell_y_crds[11]
-        if type_key % 300 == 0:
-            self.im = ass_cell_y_crds[7]
         elif type_key % 200 == 0:
+            self.im = ass_cell_y_crds[7]
+        elif type_key % 180 == 0:
             self.im = ass_cell_y_crds[random.randint(4, 6)]
         elif type_key % 128 == 0:
             self.im = ass_cell_y_crds[8]
@@ -28,9 +28,6 @@ class Cell(pygame.sprite.Sprite):
         self.rect.y = y
         self.x = x
         self.y = y
-
-    def update(self, *args, **kwargs):
-        pass
 
     def get_im(self):
         return self.im

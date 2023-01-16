@@ -49,7 +49,7 @@ def display(resources, sc):
 def inter():
     cou = 0
     for i in range(2):
-        for j in range(4):
+        for j in range(5):
             Button(itr, buttons_types[cou], 1024 + i * 37, 512 + j * 37)
             cou += 1
 

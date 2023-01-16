@@ -1,5 +1,6 @@
 from cells import Board
 from interface import *
+from Berater import Berater
 
 
 board = Board(CELL_HOR_NUM, CELL_VERT_NUM, CELL_SIDE)
@@ -13,6 +14,7 @@ buildings = pygame.sprite.Group()
 
 mh = MainHall(buildings, board)
 
+ber = Berater(1150, 100)
 
 interface = inter()
 
@@ -34,21 +36,28 @@ while running:
                 if pygame.key.get_pressed()[pygame.K_p]:
                     pause.change()
     else:
-        TICK.add(1)
+        cou += 1
         image = load_image('berater_1.png')
         rect = image.get_rect()
         rect.x = 1024
         rect.y = 16
-        if TICK.get_value() == 1000:
-            TICK.decrease(999)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            if event.type == pygame.KEYDOWN:
-                if pygame.key.get_pressed()[pygame.K_p]:
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_p:
                     pause.change()
-            if event.type == pygame.MOUSEBUTTONUP:
+                if event.key == pygame.K_SPACE:
+                    for fl in range(len(ber.flags)):
+                        if ber.get_event_flag(fl):
+                            ber.change_flag(fl, False)
+                            try:
+                                ber.change_flag(fl + 1, True)
+                            except:
+                                pass
+                            break
 
+            if event.type == pygame.MOUSEBUTTONUP:
                 x, y = pygame.mouse.get_pos()
 
                 if fl_btn_select == 0:
@@ -83,21 +92,31 @@ while running:
         clock.tick(FPS)
         screen.fill(pygame.Color('black'))
 
-        all_sprites.update()
         all_sprites.draw(screen)
-
-        itr.draw(screen)
-        itr.update()
-
         icn.draw(screen)
-        icn.update()
-
-        peoples.update()
-
+        itr.draw(screen)
+        buildings.draw(screen)
         display([BREAD, WOOD, STONE, IRON, MONEY, WHEAT, IRON_ORE, GOLD_ORE, peoples], screen)
 
-        buildings.draw(screen)
-        buildings.update()
+        x = ber.event()
+        if x != 0:
+            if x == 3:
+                prod_mod = 0
+                while True:
+                    x, y = random.randrange(0, WIDTH - 16, 16), random.randrange(0, HEIGHT - 16, 16)
+                    if Ferma(buildings, board, x, y).flag:
+                        WOOD.add(100)
+                        Ferma(buildings, board, x, y)
+                        break
+
+        if cou >= clock.get_fps():
+            all_sprites.update()
+            itr.update()
+            icn.update()
+            peoples.update()
+            buildings.update()
+
+            cou = 0
 
         pygame.display.flip()
 
