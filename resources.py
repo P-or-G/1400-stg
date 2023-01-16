@@ -1,5 +1,6 @@
 from settings import *
 import random
+from Win_and_lose import w_or_lose, Lose, Win
 
 
 class Resource:
@@ -22,7 +23,7 @@ class Resource:
         return self.value
 
 
-BREAD = Resource(start_bread)
+BREAD = Resource(0)
 WOOD = Resource(start_wood)
 STONE = Resource(start_stone)
 IRON = Resource(start_iron)
@@ -32,8 +33,7 @@ IRON_ORE = Resource(start_iron_ore)
 GOLD = Resource(start_gold)
 GOLD_ORE = Resource(start_gold_ore)
 TICK = Resource(0)
-
-people_limit = Resource(10)
+people_limit = Resource(start_house_cap)
 
 
 class Peoples:
@@ -54,7 +54,10 @@ class Peoples:
         if TICK.get_value() % 100 == 0:
             BREAD.decrease(self.num)
         if BREAD.get_value() == 0:
-            print(x // 0)
+            Lose(w_or_lose)
+            w_or_lose.draw(screen)
+            if TICK.get_value() % 500 == 0:
+                pygame.quit()
 
     def get_value(self):
         return self.num

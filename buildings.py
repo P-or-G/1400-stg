@@ -4,6 +4,21 @@ from resources import BREAD, WOOD, STONE, IRON, MONEY, WHEAT, IRON_ORE, GOLD_ORE
 import random
 
 
+class MainHallLvl:
+    def __init__(self):
+        self.value = 1
+
+    def upgrade(self):
+        if self.value < 3:
+            self.value += 1
+
+    def getvalue(self):
+        return self.value
+
+
+Mhl = MainHallLvl()
+
+
 class MainHall(pygame.sprite.Sprite):
     def __init__(self, group, board):
         # НЕОБХОДИМО вызвать конструктор родительского класса Sprite.
@@ -12,7 +27,6 @@ class MainHall(pygame.sprite.Sprite):
         self.image = load_image('main_hall_lvl1.png')
         self.rect = self.image.get_rect()
         self.board = board
-        self.flag = 0
         while True:
             self.rect.x, self.rect.y = random.randrange(0, WIDTH + 448, 16), random.randrange(16, HEIGHT, 16)
             x = self.rect.x
@@ -37,14 +51,20 @@ class MainHall(pygame.sprite.Sprite):
             except:
                 pass
 
+    def update(self):
+        if Mhl.getvalue() == 3:
+            Win(w_or_lose)
+            w_or_lose.draw(screen)
+            pause.change()
+
     def select(self, x, y):
-        if self.rect.x <= x <= self.rect.x + 32 and self.rect.y <= y <= self.rect.y + 32:
-            if peoples.get_value() >= 1000 and self.flag == 0:
+        if self.rect.x <= x <= self.rect.x + 64 and self.rect.y <= y <= self.rect.y + 64:
+            if peoples.get_value() >= 1000 and Mhl.getvalue() == 1:
                 self.image = load_image('main_hall_lvl2.png')
-                self.flag += 1
-            elif peoples.get_value() >= 10000 and self.flag == 1:
+                Mhl.upgrade()
+            elif peoples.get_value() >= 10000 and Mhl.getvalue() == 2:
                 self.image = load_image('main_hall_lvl3.png')
-                self.flag += 1
+                Mhl.upgrade()
 
 
 class Mill(pygame.sprite.Sprite):
@@ -60,8 +80,8 @@ class Mill(pygame.sprite.Sprite):
         self.prod_mod = 0
         for i in range(0, 17, 16):
             for j in range(0, 17, 16):
-                    if board.get_cell(x + i, y + j).im in safe_types and \
-                            len(pygame.sprite.spritecollide(self, group, False)) <= 1:
+                if board.get_cell(x + i, y + j).im in safe_types and \
+                        len(pygame.sprite.spritecollide(self, group, False)) <= 1:
                         self.prod_mod += 100
         if self.prod_mod != 400 or WOOD.get_value() < 250 or WHEAT.get_value() < 100:
             self.kill()
@@ -101,25 +121,23 @@ class Ferma(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
         self.prod_mod = 0
-        try:
-            for i in range(0, 17, 16):
-                for j in range(0, 17, 16):
-                    if board.get_cell(x + i, y + j).im in fertile_soils and \
-                            len(pygame.sprite.spritecollide(self, group, False)) <= 1:
-                        board.get_cell(x + i, y + j).type_change()
-                        if self.prod_mod == 0:
-                            self.prod_mod += 100
-                        else:
-                            self.prod_mod *= 1.5
-            if self.prod_mod == 0 or WOOD.get_value() < 100:
-                self.kill()
-            else:
-                WOOD.decrease(100)
-                self.prod_mod = round(self.prod_mod)
-        except:
-            pass
+        for i in range(0, 17, 16):
+            for j in range(0, 17, 16):
+                if board.get_cell(x + i, y + j).im in fertile_soils and \
+                        len(pygame.sprite.spritecollide(self, group, False)) <= 1:
+                    board.get_cell(x + i, y + j).type_change()
+                    if self.prod_mod == 0:
+                        self.prod_mod += 100
+                    else:
+                        self.prod_mod *= 1.5
+        if self.prod_mod == 0 or WOOD.get_value() < 100:
+            self.kill()
+        else:
+            WOOD.decrease(100)
+            self.prod_mod = round(self.prod_mod)
 
-    def update(self, *args, **kwargs):
+
+    def update(self):
         if TICK.get_value() % 200 == 0:
             self.image = load_image('ferma_1.png')
         elif TICK.get_value() % 200 == 50:

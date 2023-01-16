@@ -13,6 +13,8 @@ CELL_VERT_NUM = HEIGHT // CELL_SIDE
 CELL_HOR_NUM = WIDTH // CELL_SIDE
 FPS = 60
 
+os.environ['SDL_VIDEO_WINDOW_POS'] = "0,0"
+screen = pygame.display.set_mode(TRUE_SIZE, pygame.NOFRAME)
 
 # - Sprites options
 GRAVITY = 0.1
@@ -39,18 +41,16 @@ resources_icons = ['food_icon.png', 'wood_icon.png', 'rock_icon.png', 'iron_icon
 
 
 # - Gameplay options
-start_money = 99999999
-start_wood = 99999999
-start_stone = 99999999
-start_iron = 99999999
+start_money = 0
+start_wood = 0
+start_stone = 0
+start_iron = 0
 start_bread = 100
-start_wheat = 99999999
+start_wheat = 0
 start_iron_ore = 0
 start_gold = 0
 start_gold_ore = 0
-
 start_house_cap = 10
-house_cap = start_house_cap
 
 
 # - Useful functions
@@ -68,3 +68,17 @@ def load_image(name, colorkey=None):
     else:
         image = image.convert_alpha()
     return image
+
+
+class Pause:
+    def __init__(self):
+        self.value = False
+
+    def change(self):
+        if self.value:
+            self.value = False
+        else:
+            self.value = True
+
+
+pause = Pause()

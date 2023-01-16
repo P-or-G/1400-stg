@@ -2,9 +2,6 @@ from cells import Board
 from interface import *
 
 
-os.environ['SDL_VIDEO_WINDOW_POS'] = "0,0"
-screen = pygame.display.set_mode(TRUE_SIZE, pygame.NOFRAME)
-
 board = Board(CELL_HOR_NUM, CELL_VERT_NUM, CELL_SIDE)
 
 all_sprites = board.render()
@@ -29,68 +26,79 @@ x_tr = ''
 y_tr = ''
 cou = 0
 while running:
-    TICK.add(1)
-    image = load_image('berater_1.png')
-    rect = image.get_rect()
-    rect.x = 1024
-    rect.y = 16
-    if TICK.get_value() == 1000:
-        TICK.decrease(999)
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-        if event.type == pygame.MOUSEBUTTONUP:
+    if pause.value:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            if event.type == pygame.KEYDOWN:
+                if pygame.key.get_pressed()[pygame.K_p]:
+                    pause.change()
+    else:
+        TICK.add(1)
+        image = load_image('berater_1.png')
+        rect = image.get_rect()
+        rect.x = 1024
+        rect.y = 16
+        if TICK.get_value() == 1000:
+            TICK.decrease(999)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            if event.type == pygame.KEYDOWN:
+                if pygame.key.get_pressed()[pygame.K_p]:
+                    pause.change()
+            if event.type == pygame.MOUSEBUTTONUP:
 
-            x, y = pygame.mouse.get_pos()
+                x, y = pygame.mouse.get_pos()
 
-            if fl_btn_select == 0:
+                if fl_btn_select == 0:
 
-                for btn in itr:
-                    if btn.select(x, y):
+                    for btn in itr:
+                        if btn.select(x, y):
 
-                        x_tr = btn.rect.x
-                        y_tr = btn.rect.y
-                        im_tr = btn.type
-                        tr_btn = btn
-                        fl_btn_select = 1
+                            x_tr = btn.rect.x
+                            y_tr = btn.rect.y
+                            im_tr = btn.type
+                            tr_btn = btn
+                            fl_btn_select = 1
 
-            elif fl_btn_select == 1:
-                if pygame.mouse.get_pos()[0] < 1024 - 16:
-                    fl_btn_select = 0
-                    button_building_connect(buildings, board, pygame.mouse.get_pos()[0] // 16 * 16,
-                                            pygame.mouse.get_pos()[1] // 16 * 16, im_tr)
-                    tr_btn.kill()
-                    Button(itr, im_tr, x_tr, y_tr)
-                else:
-                    fl_btn_select = 0
-                    tr_btn.kill()
-                    Button(itr, im_tr, x_tr, y_tr)
+                elif fl_btn_select == 1:
+                    if pygame.mouse.get_pos()[0] < 1024 - 16:
+                        fl_btn_select = 0
+                        button_building_connect(buildings, board, pygame.mouse.get_pos()[0] // 16 * 16,
+                                                pygame.mouse.get_pos()[1] // 16 * 16, im_tr)
+                        tr_btn.kill()
+                        Button(itr, im_tr, x_tr, y_tr)
+                    else:
+                        fl_btn_select = 0
+                        tr_btn.kill()
+                        Button(itr, im_tr, x_tr, y_tr)
 
-            x, y = pygame.mouse.get_pos()
-            mh.select(x, y)
+                x, y = pygame.mouse.get_pos()
+                mh.select(x, y)
 
-    if fl_btn_select == 1:
-        tr_btn.rect = (pygame.mouse.get_pos()[0] // 16 * 16, pygame.mouse.get_pos()[1] // 16 * 16)
+        if fl_btn_select == 1:
+            tr_btn.rect = (pygame.mouse.get_pos()[0] // 16 * 16, pygame.mouse.get_pos()[1] // 16 * 16)
 
-    clock.tick(FPS)
-    screen.fill(pygame.Color('black'))
+        clock.tick(FPS)
+        screen.fill(pygame.Color('black'))
 
-    all_sprites.update()
-    all_sprites.draw(screen)
+        all_sprites.update()
+        all_sprites.draw(screen)
 
-    buildings.draw(screen)
-    buildings.update()
+        itr.draw(screen)
+        itr.update()
 
-    itr.draw(screen)
-    itr.update()
+        icn.draw(screen)
+        icn.update()
 
-    icn.draw(screen)
-    icn.update()
+        peoples.update()
 
-    peoples.update()
+        display([BREAD, WOOD, STONE, IRON, MONEY, WHEAT, IRON_ORE, GOLD_ORE, peoples], screen)
 
-    display([BREAD, WOOD, STONE, IRON, MONEY, WHEAT, IRON_ORE, GOLD_ORE, peoples], screen)
+        buildings.draw(screen)
+        buildings.update()
 
-    pygame.display.flip()
+        pygame.display.flip()
 
 pygame.quit()
