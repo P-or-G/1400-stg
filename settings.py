@@ -32,6 +32,8 @@ buttons_types = ['mill_btn.png', 'saw_btn.png', 'fou_btn.png', 'farm_btn.png',
 resources_icons = ['food_icon.png', 'wood_icon.png', 'rock_icon.png', 'iron_icon.png',
                    'money_icon.png', 'wheat_icon.png', 'iron_ore_icon.png', 'gold_icon.png']
 
+all_home = ['home_1.png', 'home_2.png', 'home_3.png']
+
 
 # - Gameplay options
 start_money = 99999999

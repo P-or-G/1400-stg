@@ -393,6 +393,40 @@ class Mint(pygame.sprite.Sprite):
                 GOLD.decrease(10)
 
 
+class Home(pygame.sprite.Sprite):
+    def __init__(self, group, board, x, y):
+        super().__init__(group)
+        self.image = all_home[random.randint(0, 2)]
+        self.rect = self.image.get_rect()
+        self.board = board
+        self.flag = True
+        self.rect.x = x
+        self.rect.y = y
+        self.prod_mod = 0
+        try:
+            for i in range(0, 17, 16):
+                for j in range(0, 17, 16):
+                    print(i, j)
+                    if board.get_cell(x + i, y + j).im in safe_types and \
+                            len(pygame.sprite.spritecollide(self, group, False)) <= 1:
+                        board.get_cell(x + i, y + j).type_change()
+                        self.prod_mod += 100
+            if self.prod_mod != 100 or STONE.get_value() < 200 or WOOD.get_value() < 200 or BREAD.get_value() < 100:
+                self.kill()
+            else:
+                WOOD.decrease(200)
+                STONE.decrease(200)
+                BREAD.decrease(100)
+                self.prod_mod = round(self.prod_mod)
+                MAX_HUMAN.add(50)
+        except:
+            pass
+
+    def select(self, x, y):
+        if self.rect.x <= x <= self.rect.x + 32 and self.rect.y <= y <= self.rect.y + 32:
+            print('WIP')
+
+
 def button_building_connect(group, board, x, y, btn):
     if btn == 'mill_btn.png':
         Mill(group, board, x, y)
