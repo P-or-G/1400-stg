@@ -55,9 +55,9 @@ class Mill(pygame.sprite.Sprite):
         self.prod_mod = 0
         for i in range(0, 17, 16):
             for j in range(0, 17, 16):
-                    if board.get_cell(x + i, y + j).im in safe_types and \
-                            len(pygame.sprite.spritecollide(self, group, False)) <= 1:
-                        self.prod_mod += 100
+                if board.get_cell(x + i, y + j).im in safe_types and \
+                        len(pygame.sprite.spritecollide(self, group, False)) <= 1:
+                    self.prod_mod += 100
         if self.prod_mod != 400 or WOOD.get_value() < 250 or WHEAT.get_value() < 100:
             self.kill()
         else:
@@ -140,7 +140,7 @@ class Sawmill(pygame.sprite.Sprite):
                             self.prod_mod += 100
                         else:
                             self.prod_mod *= 1.5
-            if self.prod_mod == 0 or WHEAT.get_value() >= 200:
+            if self.prod_mod == 0 or WHEAT.get_value() < 200:
                 self.kill()
             else:
                 WHEAT.decrease(200)

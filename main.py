@@ -34,10 +34,6 @@ y_tr = ''
 
 while running:
     TICK.add(1)
-    image = load_image('berater_1.png')
-    rect = image.get_rect()
-    rect.x = 1024
-    rect.y = 16
     if TICK.get_value() == 1000:
         TICK.decrease(999)
     for event in pygame.event.get():

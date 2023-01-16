@@ -40,9 +40,9 @@ start_stone = 99999999
 start_iron = 99999999
 start_bread = 99999999
 start_wheat = 99999999
-start_iron_ore = 0
-start_gold = 0
-start_gold_ore = 0
+start_iron_ore = 99999999
+start_gold = 999999999
+start_gold_ore = 999999999999
 
 
 # - Useful functions
