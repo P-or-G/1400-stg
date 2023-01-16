@@ -6,8 +6,6 @@ import random
 
 class MainHall(pygame.sprite.Sprite):
     def __init__(self, group, board):
-        # НЕОБХОДИМО вызвать конструктор родительского класса Sprite.
-        # Это очень важно !!!
         super().__init__(group)
         self.image = load_image('main_hall_lvl1.png')
         self.rect = self.image.get_rect()
