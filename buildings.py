@@ -29,7 +29,6 @@ class MainHall(pygame.sprite.Sprite):
                         f2 = True
                     else:
                         f2 = False
-                        break
                 if f1 and f2:
                     break
             except:
