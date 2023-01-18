@@ -56,8 +56,7 @@ class Peoples:
         if BREAD.get_value() == 0:
             Lose(w_or_lose)
             w_or_lose.draw(screen)
-            if TICK.get_value() % 500 == 0:
-                pygame.quit()
+            pause.change()
 
     def get_value(self):
         return self.num

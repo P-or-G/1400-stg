@@ -1,4 +1,5 @@
-import pygame
+import pygame.time
+
 from buildings import *
 
 
@@ -10,9 +11,13 @@ class Berater:
         self.flags = [True, False, False, False, False, False, False]
         self.ev_count = 0
         self.flag_ret = True
+        self.first_sound_play = [True, True, True, True, True, True, True, True, True]
 
     def change_flag(self, num, new_value):
         self.flags[num] = new_value
+
+    def set_normal(self):
+        self.flags = [True, False, False, False, False, False, False]
 
     def get_event_flag(self, num):
         return self.flags[num]
@@ -20,6 +25,9 @@ class Berater:
     def event(self):
         strings = []
         if self.flags[0]:
+            if self.first_sound_play[0]:
+                queue.play_sound('sounds/1_slide.wav')
+                self.first_sound_play[0] = False
             strings.append(self.font.render('Добро пожаловать в ваш город, нажмите пробел, чтобы продолжить',
                                             True, (255, 255, 255)))
 
@@ -33,6 +41,9 @@ class Berater:
             return 0
 
         elif self.flags[1]:
+            if self.first_sound_play[1]:
+                queue.play_sound('sounds/2_slide.wav')
+                self.first_sound_play[1] = False
             strings.append(self.font.render('Для начала разберёмся с интерфейсом. Слева от вас игровое поле.',
                                             True, (255, 255, 255)))
             strings.append(self.font.render('На него вы вольны размещать здания, кнопки для этого даны правее.',
@@ -48,6 +59,9 @@ class Berater:
             return 0
 
         elif self.flags[2]:
+            if self.first_sound_play[2]:
+                queue.play_sound('sounds/3_slide.wav')
+                self.first_sound_play[2] = False
             strings.append(self.font.render('Одно здание уже находится в вашем распоряжении.', True,
                                             (255, 255, 255)))
             strings.append(self.font.render('Это Ратуша - основа вашей игры, вы можете улучшать её по нажатию,', True,
@@ -93,6 +107,13 @@ class Berater:
             return 0
 
         elif self.flags[3]:
+            if self.first_sound_play[4]:
+                delay = queue.play_sound('sounds/4_slide_1.wav')
+                self.first_sound_play[4] = False
+                pygame.time.delay(round(delay * 1000))
+            if self.first_sound_play[5]:
+                queue.play_sound('sounds/4_slide_2.wav')
+                self.first_sound_play[5] = False
             strings.append(self.font.render('Кстати о ресурсах, все они производятся зданиями.',
                                             True, (255, 255, 255)))
             strings.append(self.font.render('Такие, как еда тратят другой ресурс при производстве (пшеница)',
@@ -115,6 +136,9 @@ class Berater:
             return 0
 
         elif self.flags[4]:
+            if self.first_sound_play[6]:
+                queue.play_sound('sounds/5_slide.wav')
+                self.first_sound_play[6] = False
             strings.append(self.font.render('Прошу заметить, хотя вы видите все кнопки со зданиями,',
                                             True, (255, 255, 255)))
             strings.append(self.font.render('Вы не можете ставить здания связанные с золотом до 2 ур ратуши',
@@ -130,6 +154,9 @@ class Berater:
             return 0
 
         elif self.flags[5]:
+            if self.first_sound_play[7]:
+                queue.play_sound('sounds/6_slide.wav')
+                self.first_sound_play[7] = False
             strings.append(self.font.render('Также есть особый ресурс - люди,',
                                             True, (255, 255, 255)))
             strings.append(self.font.render('Они каждую секунду потребляют 1 единицу еды, каждый,',
@@ -153,6 +180,12 @@ class Berater:
             return 0
 
         elif self.flags[6]:
+            if self.first_sound_play[8]:
+                queue.play_sound('sounds/slide_7_1.wav')
+                self.first_sound_play[8] = False
+            if self.first_sound_play[9]:
+                queue.play_sound('sounds/slide_7_2.wav')
+                self.first_sound_play[9] = False
             strings.append(self.font.render('А чтобы выиграть вы должны построить третью ратушу',
                                             True, (255, 255, 255)))
             strings.append(self.font.render('На этом рекомендации вашего советника кончаются, все они записаны',

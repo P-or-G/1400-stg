@@ -1,3 +1,5 @@
+import pygame
+
 from cells import Board
 from interface import *
 from Berater import Berater
@@ -54,8 +56,26 @@ while running:
                             try:
                                 ber.change_flag(fl + 1, True)
                             except:
-                                pass
+                                ber.set_normal()
                             break
+                if event.key == pygame.K_1:
+                    queue.play_sound('sounds/1_slide.wav')
+                if event.key == pygame.K_2:
+                    queue.play_sound('sounds/2_slide.wav')
+                if event.key == pygame.K_3:
+                    queue.play_sound('sounds/3_slide.wav')
+                if event.key == pygame.K_4:
+                    queue.play_sound('sounds/4_slide_1.wav')
+                if event.key == pygame.K_5:
+                    queue.play_sound('sounds/4_slide_2.wav')
+                if event.key == pygame.K_6:
+                    queue.play_sound('sounds/5_slide.wav')
+                if event.key == pygame.K_7:
+                    queue.play_sound('sounds/6_slide.wav')
+                if event.key == pygame.K_8:
+                    queue.play_sound('sounds/slide_7_1.wav')
+                if event.key == pygame.K_9:
+                    queue.play_sound('sounds/slide_7_2.wav')
 
             if event.type == pygame.MOUSEBUTTONUP:
                 x, y = pygame.mouse.get_pos()
@@ -97,6 +117,7 @@ while running:
         itr.draw(screen)
         buildings.draw(screen)
         display([BREAD, WOOD, STONE, IRON, MONEY, WHEAT, IRON_ORE, GOLD_ORE, peoples], screen)
+        w_or_lose.draw(screen)
 
         x = ber.event()
         if x != 0:

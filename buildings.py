@@ -1,7 +1,5 @@
 from cells import *
 from resources import *
-from resources import BREAD, WOOD, STONE, IRON, MONEY, WHEAT, IRON_ORE, GOLD_ORE
-import random
 
 
 class MainHallLvl:
@@ -63,13 +61,14 @@ class MainHall(pygame.sprite.Sprite):
                and WOOD.get_value() >= first_upgrade_wood and STONE.get_value() >= first_upgrade_stone \
                and IRON.get_value() >= first_upgrade_iron:
 
+                Mhl.upgrade()
                 WOOD.decrease(first_upgrade_wood)
                 STONE.decrease(first_upgrade_stone)
                 IRON.decrease(first_upgrade_iron)
                 self.image = load_image('main_hall_lvl2.png')
 
                 Mhl.upgrade()
-            elif peoples.get_value() >= first_upgrade_people and Mhl.getvalue() == 2 \
+            elif peoples.get_value() >= second_upgrade_people and Mhl.getvalue() == 2 \
                     and WOOD.get_value() >= second_upgrade_wood and STONE.get_value() >= second_upgrade_stone \
                     and IRON.get_value() >= second_upgrade_iron and GOLD.get_value() >= second_upgrade_gold \
                     and MONEY.get_value() >= second_upgrade_money:
