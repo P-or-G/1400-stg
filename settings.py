@@ -36,16 +36,16 @@ resources_icons = ['food_icon.png', 'wood_icon.png', 'rock_icon.png', 'iron_icon
 
 
 # Настройка ресурсов, чит-коды не добавлены
-start_money = 100000
-start_wood = 100000
-start_stone = 100000
-start_iron = 100000
-start_bread = 1000000
-start_wheat = 100000
-start_iron_ore = 100000
-start_gold = 100000
-start_gold_ore = 100000
-start_house_cap = 100000
+start_money = 100
+start_wood = 500
+start_stone = 100
+start_iron = 100
+start_bread = 200
+start_wheat = 500
+start_iron_ore = 0
+start_gold = 0
+start_gold_ore = 0
+start_house_cap = 10
 
 # Настройка цен для ратуши
 first_upgrade_wood = 3000

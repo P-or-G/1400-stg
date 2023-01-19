@@ -70,4 +70,4 @@ class Peoples:
         return self.num
 
 
-peoples = Peoples(2)
+peoples = Peoples(10)

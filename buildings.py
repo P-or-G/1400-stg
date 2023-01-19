@@ -413,8 +413,11 @@ class House(pygame.sprite.Sprite):
                    len(pygame.sprite.spritecollide(self, group, False)) <= 1:
                     self.prod_mod += 5
         if self.prod_mod != 20 or WOOD.get_value() <= 50 or (Mhl.getvalue() == 2 and STONE.get_value() <= 20):
-            self.kill
+            self.kill()
         else:
+            WOOD.decrease(50)
+            if Mhl.getvalue() == 2:
+                STONE.decrease(20)
             people_limit.add(self.prod_mod)
 
 
