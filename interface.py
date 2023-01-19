@@ -1,28 +1,11 @@
-import pygame
-from random import randint
-from settings import *
 from buildings import *
-
+from menu import Button
 
 itr = pygame.sprite.Group()
 icn = pygame.sprite.Group()
 
 
-class Button(pygame.sprite.Sprite):
-    def __init__(self, group, im, x, y):
-        super().__init__(group)
-        self.type = im
-        self.image = load_image(im)
-        self.rect = self.image.get_rect()
-        self.rect.x = x
-        self.rect.y = y
-
-    def select(self, x, y):
-        if self.rect.x <= x <= self.rect.x + 32 and self.rect.y <= y <= self.rect.y + 32:
-            return True
-        return False
-
-
+# Класс Icon упрощает создание множества иконок
 class Icon(pygame.sprite.Sprite):
     def __init__(self, group, im, x, y):
         super().__init__(group)
@@ -34,6 +17,7 @@ class Icon(pygame.sprite.Sprite):
         self.rect.y = y
 
 
+# Выводит иконки и кол-во ресурсов
 def display(resources, sc):
     cou = 0
     fullname = os.path.join('assets', 'ARCADECLASSIC.TTF')
@@ -46,6 +30,7 @@ def display(resources, sc):
         sc.blit(t, (1070, y))
 
 
+# Создаёт сетку кнопок
 def inter():
     cou = 0
     for i in range(2):

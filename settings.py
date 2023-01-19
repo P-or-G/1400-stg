@@ -1,6 +1,6 @@
 from useful_func import *
 
-# - Window options
+# Параметры окна
 TRUE_SIZE = T_W, T_H = 1920, 1024
 SIZE = WIDTH, HEIGHT = 1024, 1024
 CELL_SIDE = 16
@@ -12,7 +12,7 @@ FPS = 60
 os.environ['SDL_VIDEO_WINDOW_POS'] = "0,0"
 screen = pygame.display.set_mode(TRUE_SIZE, pygame.NOFRAME)
 
-# - Sprites options
+# Настройка картинок
 ass_cell_y_crds = ['grass_1.png', 'grass_2.png', 'grass_3.png', 'grass_4.png',
                    'rock_1.png', 'rock_2.png', 'rock_3.png', 'iron.png', 'forest_3.png',
                    'f_s1.png', 'f_s2.png', 'gold_rock.png']
@@ -35,7 +35,7 @@ resources_icons = ['food_icon.png', 'wood_icon.png', 'rock_icon.png', 'iron_icon
                    'money_icon.png', 'wheat_icon.png', 'iron_ore_icon.png', 'gold_icon.png', 'human_icon.png']
 
 
-# - Gameplay options
+# Настройка ресурсов, чит-коды не добавлены
 start_money = 10000
 start_wood = 100000
 start_stone = 100000
@@ -45,8 +45,9 @@ start_wheat = 100000
 start_iron_ore = 100000
 start_gold = 100000
 start_gold_ore = 100000
-start_house_cap = 1000000
+start_house_cap = 100000
 
+# Настройка цен для ратуши
 first_upgrade_wood = 3000
 first_upgrade_stone = 5000
 first_upgrade_iron = 300

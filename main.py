@@ -1,11 +1,10 @@
-import pygame
-
+from menu import *
 from cells import Board
 from interface import *
-from Berater import Berater
+from Berater import ber
 
 
-board = Board(CELL_HOR_NUM, CELL_VERT_NUM, CELL_SIDE)
+board = Board(CELL_HOR_NUM, CELL_VERT_NUM, CELL_SIDE)   # Генерация клеток
 
 all_sprites = board.render()
 
@@ -16,20 +15,52 @@ buildings = pygame.sprite.Group()
 
 mh = MainHall(buildings, board)
 
-ber = Berater(1150, 100)
+m_grp, but_grp = menu_init('dif_sel_screen.png', 0)
 
 interface = inter()
 
+#   Выше создание групп спрайтов
+
 time_count = 0
 fl_btn_select = 0
+
 running = True
+start_screen_run = True
+screen_flag = False
 
 tr_btn = ''
 im_tr = ''
 x_tr = ''
 y_tr = ''
 cou = 0
+
+#   Выше важные переменные
 while running:
+    while start_screen_run:
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONUP:
+                x, y = pygame.mouse.get_pos()
+                for btn in but_grp:
+                    if btn.select(x, y):
+                        if btn.name == 'easy':
+                            difficulty.new_dif('easy')
+                        elif btn.name == 'hard':
+                            difficulty.new_dif('hard')
+                        elif btn.name == 'name':
+                            start_screen_run = False
+                        screen_flag = True
+
+        if screen_flag:
+            m_grp, but_grp = menu_init('menu.png', 1)
+
+        m_grp.update()
+        m_grp.draw(screen)
+
+        but_grp.update()
+        but_grp.draw(screen)
+
+        pygame.display.flip()
+
     if pause.value:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -39,10 +70,6 @@ while running:
                     pause.change()
     else:
         cou += 1
-        image = load_image('berater_1.png')
-        rect = image.get_rect()
-        rect.x = 1024
-        rect.y = 16
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -58,7 +85,8 @@ while running:
                             except:
                                 ber.set_normal()
                             break
-                if event.key == pygame.K_1:
+
+                if event.key == pygame.K_1: # Доступ к звукам на 1-9
                     queue.play_sound('sounds/1_slide.wav')
                 if event.key == pygame.K_2:
                     queue.play_sound('sounds/2_slide.wav')
@@ -91,7 +119,7 @@ while running:
                             tr_btn = btn
                             fl_btn_select = 1
 
-                elif fl_btn_select == 1:
+                elif fl_btn_select == 1:    # Процесс постановки здания сделан прям тут без функции ._.
                     if pygame.mouse.get_pos()[0] < 1024 - 16:
                         fl_btn_select = 0
                         button_building_connect(buildings, board, pygame.mouse.get_pos()[0] // 16 * 16,
@@ -109,9 +137,11 @@ while running:
         if fl_btn_select == 1:
             tr_btn.rect = (pygame.mouse.get_pos()[0] // 16 * 16, pygame.mouse.get_pos()[1] // 16 * 16)
 
+        # Настройка времени
         clock.tick(FPS)
         screen.fill(pygame.Color('black'))
 
+        # Отрисовка спрайтов
         all_sprites.draw(screen)
         icn.draw(screen)
         itr.draw(screen)
@@ -119,6 +149,7 @@ while running:
         display([BREAD, WOOD, STONE, IRON, MONEY, WHEAT, IRON_ORE, GOLD_ORE, peoples], screen)
         w_or_lose.draw(screen)
 
+        # Появление фермы в обучении
         x = ber.event()
         if x != 0:
             if x == 3:
@@ -130,6 +161,7 @@ while running:
                         Ferma(buildings, board, x, y)
                         break
 
+        # Обновление происходит раз в 1 секунду
         if cou >= clock.get_fps():
             all_sprites.update()
             itr.update()

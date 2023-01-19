@@ -1,7 +1,7 @@
 import pygame
 import os
 import sys
-import random
+import random   # Нужен для других файлов
 
 
 # Инициализация проходит тут для корректной работы всех функций
@@ -52,3 +52,14 @@ class Pause:    # Класс реализован для простой рабо
 
 queue = SoundQueue()
 pause = Pause()     # - Сразу создаём переменные с классами для дальнейшего использования
+
+
+class Difficulty:
+    def __init__(self):
+        self.dif = 'easy'
+
+    def new_dif(self, new):
+        self.dif = new
+
+
+difficulty = Difficulty()

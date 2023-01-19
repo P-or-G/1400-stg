@@ -1,23 +1,22 @@
-import pygame.time
-
 from buildings import *
 
 
+# Ниже класс советника, он последовательно выводит на экран разные фразы для обучения, а также воспроизводит озвучку
 class Berater:
     def __init__(self, x, y):
         fullname = os.path.join('assets', '3997-font.otf')
         self.font = pygame.font.Font(fullname, 16)
         self.x, self.y = x, y
-        self.flags = [True, False, False, False, False, False, False]
+        self.flags = [True, False, False, False, False, False, False, False]
         self.ev_count = 0
         self.flag_ret = True
-        self.first_sound_play = [True, True, True, True, True, True, True, True, True]
+        self.first_sound_play = [True, True, True, True, True, True, True, True, True, True]
 
     def change_flag(self, num, new_value):
         self.flags[num] = new_value
 
     def set_normal(self):
-        self.flags = [True, False, False, False, False, False, False]
+        self.flags = [True, False, False, False, False, False, False, False]
 
     def get_event_flag(self, num):
         return self.flags[num]
@@ -107,13 +106,6 @@ class Berater:
             return 0
 
         elif self.flags[3]:
-            if self.first_sound_play[4]:
-                delay = queue.play_sound('sounds/4_slide_1.wav')
-                self.first_sound_play[4] = False
-                pygame.time.delay(round(delay * 1000))
-            if self.first_sound_play[5]:
-                queue.play_sound('sounds/4_slide_2.wav')
-                self.first_sound_play[5] = False
             strings.append(self.font.render('Кстати о ресурсах, все они производятся зданиями.',
                                             True, (255, 255, 255)))
             strings.append(self.font.render('Такие, как еда тратят другой ресурс при производстве (пшеница)',
@@ -122,6 +114,14 @@ class Berater:
                                             True, (255, 255, 255)))
             strings.append(self.font.render('Посмотрите на карту, там, на плодородной почве появилось поле пшеницы.',
                                             True, (255, 255, 255)))
+
+            if self.first_sound_play[4]:
+                delay = queue.play_sound('sounds/4_slide_1.wav')
+                self.first_sound_play[4] = False
+                pygame.time.delay(round(delay * 1000))
+            if self.first_sound_play[5]:
+                queue.play_sound('sounds/4_slide_2.wav')
+                self.first_sound_play[5] = False
 
             cou = 0
             for i in strings:
@@ -201,3 +201,75 @@ class Berater:
             strings = []
 
             return 0
+
+        elif self.flags[7]:
+            strings.append(self.font.render('Далее приведена стоимость зданий',
+                                            True, (255, 255, 255)))
+            strings.append(self.font.render('Мельница:',
+                                            True, (255, 255, 255)))
+            strings.append(self.font.render('   Дерево - 250',
+                                            True, (255, 255, 255)))
+            strings.append(self.font.render('   Пшеница - 100',
+                                            True, (255, 255, 255)))
+            strings.append(self.font.render('Ферма:',
+                                            True, (255, 255, 255)))
+            strings.append(self.font.render('   Дерево - 100',
+                                            True, (255, 255, 255)))
+            strings.append(self.font.render('Лесопилка:',
+                                            True, (255, 255, 255)))
+            strings.append(self.font.render('   Пшеница - 200',
+                                            True, (255, 255, 255)))
+            strings.append(self.font.render('   Камень - 10',
+                                            True, (255, 255, 255)))
+            strings.append(self.font.render('Каменоломня:',
+                                            True, (255, 255, 255)))
+            strings.append(self.font.render('   Дерево - 250',
+                                            True, (255, 255, 255)))
+            strings.append(self.font.render('   Пшеница - 150',
+                                            True, (255, 255, 255)))
+            strings.append(self.font.render('Каменоломня = Железный рудник = Золотой Рудник:',
+                                            True, (255, 255, 255)))
+            strings.append(self.font.render('   Дерево - 250',
+                                            True, (255, 255, 255)))
+            strings.append(self.font.render('   Пшеница - 150',
+                                            True, (255, 255, 255)))
+            strings.append(self.font.render('Жилой дом:',
+                                            True, (255, 255, 255)))
+            strings.append(self.font.render('   Дерево - 50',
+                                            True, (255, 255, 255)))
+            strings.append(self.font.render('   Камень - 20 (Со второго уровня ратуши)',
+                                            True, (255, 255, 255)))
+            strings.append(self.font.render('Плавильня для железа:',
+                                            True, (255, 255, 255)))
+            strings.append(self.font.render('   Дерево - 200',
+                                            True, (255, 255, 255)))
+            strings.append(self.font.render('   Камень - 300',
+                                            True, (255, 255, 255)))
+            strings.append(self.font.render('   Пшеница - 100',
+                                            True, (255, 255, 255)))
+            strings.append(self.font.render('Плавильня для золота:',
+                                            True, (255, 255, 255)))
+            strings.append(self.font.render('   Дерево - 300',
+                                            True, (255, 255, 255)))
+            strings.append(self.font.render('   Камень - 500',
+                                            True, (255, 255, 255)))
+            strings.append(self.font.render('   Пшеница - 100',
+                                            True, (255, 255, 255)))
+            strings.append(self.font.render('Монетный двор:',
+                                            True, (255, 255, 255)))
+            strings.append(self.font.render('   Дерево - 500',
+                                            True, (255, 255, 255)))
+            strings.append(self.font.render('   Камень - 500',
+                                            True, (255, 255, 255)))
+
+            cou = 0
+            for i in strings:
+                screen.blit(i, (self.x, self.y + 30 * cou))
+                cou += 1
+
+            strings = []
+
+            return 0
+
+
+ber = Berater(1150, 100)

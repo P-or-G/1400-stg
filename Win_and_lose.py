@@ -1,5 +1,4 @@
-import pygame
-from settings import load_image
+from settings import *
 
 
 w_or_lose = pygame.sprite.Group()
@@ -21,3 +20,5 @@ class Win(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = 0
         self.rect.y = 0
+
+# Тут просто настроены спрайты поражения и победы
