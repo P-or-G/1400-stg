@@ -7,9 +7,11 @@ from Win_and_lose import w_or_lose, Lose, Win
 class Resource:
     def __init__(self, num):    # Создаём объект с n ресурсов
         self.value = num
+        self.all_val = num  # Для статистики
 
     def add(self, num):     # Добавляем n ресурсов
         self.value += num
+        self.all_val += num
 
     def decrease(self, num, bl=False):
         # Убираем n ресурсов, bl - принимает True / False для игнорирования отрицательных чисел

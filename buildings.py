@@ -10,8 +10,8 @@ class MainHallLvl:
         self.value = 1
 
     def upgrade(self):
-        if self.value < 3:
-            self.value += 1
+        self.value += 1
+        print(self.value)
 
     def getvalue(self):
         return self.value
@@ -54,22 +54,34 @@ class MainHall(pygame.sprite.Sprite):
         if Mhl.getvalue() == 3:
             Win(w_or_lose)
             w_or_lose.draw(screen)
+
+            fullname = os.path.join('assets', '3997-font.otf')
+            font = pygame.font.Font(fullname, 16)
+
+            text = list()
+
+            text.append(font.render(f'Вы смогли заработать {MONEY.all_val} монет за игру,'
+                                    f' а {MONEY.get_value()} унесли с собой',
+                                    True, (255, 255, 255)))
+            text.append(font.render(f'Таким образом разозлив {peoples.get_value()} жителей', True, (255, 255, 255)))
+
+            cou = 0
+            for i in text:
+                screen.blit(i, (100, 300 + 30 * cou))
+                cou += 1
             pause.change()
 
     def select(self, x, y):     # Проверяет возможность улучшения по нажатию
         if self.rect.x <= x <= self.rect.x + 64 and self.rect.y <= y <= self.rect.y + 64:
             if peoples.get_value() >= first_upgrade_people and Mhl.getvalue() == 1 \
-               and WOOD.get_value() >= first_upgrade_wood and STONE.get_value() >= first_upgrade_stone \
-               and IRON.get_value() >= first_upgrade_iron:
+                    and WOOD.get_value() >= first_upgrade_wood and STONE.get_value() >= first_upgrade_stone \
+                    and IRON.get_value() >= first_upgrade_iron:
 
-                Mhl.upgrade()
                 WOOD.decrease(first_upgrade_wood)
                 STONE.decrease(first_upgrade_stone)
                 IRON.decrease(first_upgrade_iron)
                 self.image = load_image('main_hall_lvl2.png')
-
                 Mhl.upgrade()
-                pygame.time.delay(300)
 
             elif peoples.get_value() >= second_upgrade_people and Mhl.getvalue() == 2 \
                     and WOOD.get_value() >= second_upgrade_wood and STONE.get_value() >= second_upgrade_stone \

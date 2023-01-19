@@ -36,7 +36,7 @@ resources_icons = ['food_icon.png', 'wood_icon.png', 'rock_icon.png', 'iron_icon
 
 
 # Настройка ресурсов, чит-коды не добавлены
-start_money = 10000
+start_money = 100000
 start_wood = 100000
 start_stone = 100000
 start_iron = 100000
@@ -58,4 +58,4 @@ second_upgrade_stone = 15000
 second_upgrade_iron = 2000
 second_upgrade_gold = 1500
 second_upgrade_money = 20000
-second_upgrade_people = 10000
+second_upgrade_people = 5000
