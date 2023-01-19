@@ -378,7 +378,6 @@ class Mint(pygame.sprite.Sprite):
         self.prod_mod = 0
         for i in range(0, 17, 16):
             for j in range(0, 17, 16):
-                print(i, j)
                 if board.get_cell(x + i, y + j).im in safe_types and \
                         len(pygame.sprite.spritecollide(self, group, False)) <= 1:
                     self.prod_mod += 100
